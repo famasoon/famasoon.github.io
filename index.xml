@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wake Up People</title>
+    <link>http://gyoza.in/</link>
+    <description>Recent content on Wake Up People</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 26 Jan 2019 16:20:20 +0900</lastBuildDate>
+    
+	<atom:link href="http://gyoza.in/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo でブログを markdown で書く</title>
+      <link>http://gyoza.in/posts/firstpost/</link>
+      <pubDate>Sat, 26 Jan 2019 16:20:20 +0900</pubDate>
+      
+      <guid>http://gyoza.in/posts/firstpost/</guid>
+      <description>はじめに 最近、やったことや知ったことをブログでしっかりアウトプットしようと思い始めた。 しかしながらブログ記事を投稿しようとしても、エディタで色々と書いた後にブログの作成ページを開いて文章をコピペして見た目を整えて&amp;hellip;と作業をしている内に面倒になってくる。 これではいけないとエディタで適当に書いた後にいい感じに勝手にブログにしてくれるツールを探していたらHugoを見つけた。 普段からブログの下書きはmarkdownで書いているし、GitHubで管理しているからGitHub pages を使えば楽に運用できそう。 そんなこんなでHugoでやっていくことにした。
+環境 Ubuntu 16.04 でやっていく。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linu  Hugo とは HUGO Golang製の静的サイトジェネレータ。 色々なテーマが使えるし記事のビルドも早い。
+Hugo をインストール 公式ドキュメント通りにやったらできた。
+$ snap install hugo  パスワードの入力を求められる。 それが終わればインストール完了。
+ブログ用のディレクトリを作成する 下記コマンドでhugo new site [サイト名]でHUGOの作業用ディレクトリができあがる。
+$ hugo new site blog  日本語向けに設定を変える さて、HUGOはデフォルトだと英語圏向けの設定になっている。 これでは少しツライので日本語向け設定にする。 設定ファイルは先に作成した作業用ディレクトリ直下のconfig.toml。 これを自分好みのモノに変更する。
+baseURL = &amp;quot;https://gyoza.in&amp;quot; languageCode = &amp;quot;ja&amp;quot; title = &amp;quot;Wake Up People&amp;quot;  baseURLはHUGOで公開したいサイトのドメイン。 languageCodeは利用する言語圏に合わせて変更する。 ここでは&amp;quot;ja&amp;quot;に変更。 titleはブログのタイトル。自分好みの名前に変更(某鉄球使いは関係ない)</description>
+    </item>
+    
+  </channel>
+</rss>
