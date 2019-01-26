@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Hugo でブログを markdown で書く - Wake Up People</title>
+  
+  <meta name="description" content="はじめに 最近、やったことや知ったことをブログでしっかりアウトプットしようと思い始めた。 しかしながらブログ記事を投稿しようとしても、エディタで色々と書いた後にブログの作成ページを開いて文章をコピペして見た目を整えて&hellip;と作業をしている内に面倒になってくる。 これではいけないとエディタで適当に書いた後にいい感じに勝手にブログにしてくれるツールを探していたらHugoを見つけた。 普段からブログの下書きはmarkdownで書いているし、GitHubで管理しているからGitHub pages を使えば楽に運用できそう。 そんなこんなでHugoでやっていくことにした。
+環境 Ubuntu 16.04 でやっていく。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linu  Hugo とは HUGO Golang製の静的サイトジェネレータ。 色々なテーマが使えるし記事のビルドも早い。
+Hugo をインストール 公式ドキュメント通りにやったらできた。
+$ snap install hugo  パスワードの入力を求められる。 それが終わればインストール完了。
+ブログ用のディレクトリを作成する 下記コマンドでhugo new site [サイト名]でHUGOの作業用ディレクトリができあがる。
+$ hugo new site blog  日本語向けに設定を変える さて、HUGOはデフォルトだと英語圏向けの設定になっている。 これでは少しツライので日本語向け設定にする。 設定ファイルは先に作成した作業用ディレクトリ直下のconfig.toml。 これを自分好みのモノに変更する。
+baseURL = &quot;https://gyoza.in&quot; languageCode = &quot;ja&quot; title = &quot;Wake Up People&quot;  baseURLはHUGOで公開したいサイトのドメイン。 languageCodeは利用する言語圏に合わせて変更する。 ここでは&quot;ja&quot;に変更。 titleはブログのタイトル。自分好みの名前に変更(某鉄球使いは関係ない)">
+  <meta name="author" content="FAMASoon">
+  
+  <link href="http://gyoza.in/css/font.css" rel="stylesheet">
+  <link href="http://gyoza.in/css/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="http://gyoza.in/css/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="http://gyoza.in/img/apple-touch-icon.png">
+  <link rel="icon" href="http://gyoza.in/img/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="http://gyoza.in/index.xml" title="Wake Up People">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="http://gyoza.in/">Wake Up People</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">Hugo でブログを markdown で書く</h1>
+    <p class="post-meta">FAMASoon · 2019.1.26</p>
+  </header>
+  <div class="post-content">
+
+<h2 id="はじめに">はじめに</h2>
+
+<p>最近、やったことや知ったことをブログでしっかりアウトプットしようと思い始めた。
+しかしながらブログ記事を投稿しようとしても、エディタで色々と書いた後にブログの作成ページを開いて文章をコピペして見た目を整えて&hellip;と作業をしている内に面倒になってくる。
+これではいけないとエディタで適当に書いた後にいい感じに勝手にブログにしてくれるツールを探していたらHugoを見つけた。
+普段からブログの下書きはmarkdownで書いているし、GitHubで管理しているからGitHub pages を使えば楽に運用できそう。
+そんなこんなでHugoでやっていくことにした。</p>
+
+<h2 id="環境">環境</h2>
+
+<p>Ubuntu 16.04 でやっていく。</p>
+
+<pre><code class="language-sh">$ uname -a
+Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linu
+</code></pre>
+
+<h2 id="hugo-とは">Hugo とは</h2>
+
+<p><a href="https://gohugo.io/">HUGO</a>
+Golang製の静的サイトジェネレータ。
+色々なテーマが使えるし記事のビルドも早い。</p>
+
+<h3 id="hugo-をインストール">Hugo をインストール</h3>
+
+<p><a href="https://gohugo.io/getting-started/installing">公式ドキュメント</a>通りにやったらできた。</p>
+
+<pre><code class="language-sh">$ snap install hugo
+</code></pre>
+
+<p>パスワードの入力を求められる。
+それが終わればインストール完了。</p>
+
+<h3 id="ブログ用のディレクトリを作成する">ブログ用のディレクトリを作成する</h3>
+
+<p>下記コマンドで<code>hugo new site [サイト名]</code>でHUGOの作業用ディレクトリができあがる。</p>
+
+<pre><code class="language-sh">$ hugo new site blog
+</code></pre>
+
+<h3 id="日本語向けに設定を変える">日本語向けに設定を変える</h3>
+
+<p>さて、HUGOはデフォルトだと英語圏向けの設定になっている。
+これでは少しツライので日本語向け設定にする。
+設定ファイルは先に作成した作業用ディレクトリ直下の<code>config.toml</code>。
+これを自分好みのモノに変更する。</p>
+
+<pre><code class="language-toml">baseURL = &quot;https://gyoza.in&quot;
+languageCode = &quot;ja&quot;
+title = &quot;Wake Up People&quot;
+</code></pre>
+
+<p><code>baseURL</code>はHUGOで公開したいサイトのドメイン。
+<code>languageCode</code>は利用する言語圏に合わせて変更する。
+ここでは<code>&quot;ja&quot;</code>に変更。
+<code>title</code>はブログのタイトル。自分好みの名前に変更(某鉄球使いは関係ない)</p>
+
+<h3 id="テーマを変える">テーマを変える</h3>
+
+<p>公式がテーマを紹介している
+<a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a>
+良さそうなものを探して、そこのでもページに書いてある通りに作業をすれば大抵うまくいくはずだ。
+今回は<a href="https://themes.gohugo.io/hugo-paper/">Paper</a>に決めた。
+配布元のリポジトリに書いてあるとおりに作業をして設定ファイルを書き換える。</p>
+
+<pre><code class="language-sh">$ cd themes
+$ git clone https://github.com/nanxiaobei/hugo-paper
+</code></pre>
+
+<p>テーマをダウンロードしてきたら<code>config.toml</code>で使用するテーマを指定する。</p>
+
+<pre><code class="language-sh">$ echo 'theme = &quot;hugo-paper&quot;' &gt;&gt; config.toml
+</code></pre>
+
+<h3 id="hugo-で記事を作る">HUGO で記事を作る</h3>
+
+<p>作業用ディレクトリで<code>hugo new posts/[任意のファイル名].md</code>で記事を作成できる。
+とりあえず初投稿だし<code>firstpost.md</code>でも作ってみる。</p>
+
+<pre><code class="language-sh">$ hugo new posts/firstpost.md
+</code></pre>
+
+<p>すると<code>content/posts</code>というディレクトリと<code>firstpost.md</code>ができる。
+中身は下記の通り、記事のタイトルと投稿日時、下書きかそうでないかの情報が書かれている。</p>
+
+<pre><code>---
+title: &quot;firstpost&quot;
+date: 2019-01-26T16:20:20+09:00
+draft: true
+---
+</code></pre>
+
+<p>適当にタイトルと中身を書き換えて<code>draft</code>の項目を<code>false</code>にして公開設定にする。
+見た目が気になる場合は下記コマンドでプレビューが見れる。</p>
+
+<pre><code class="language-sh">$ hugo server -D
+</code></pre>
+
+<h3 id="ビルド">ビルド</h3>
+
+<p>記事まで作成した所で実際に</p>
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://qiita.com/ryoma-tokushige/items/eba3e6cd415e9755af87">https://qiita.com/ryoma-tokushige/items/eba3e6cd415e9755af87</a></p>
+</div>
+  <footer class="post-footer">
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Wake Up People</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="http://gyoza.in/js/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="http://gyoza.in/js/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+
