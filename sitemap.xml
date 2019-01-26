@@ -3,28 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://gyoza.in/posts/firstpost/</loc>
+    <loc>https://gyoza.in/posts/firstpost/</loc>
     <lastmod>2019-01-26T16:20:20+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://gyoza.in/categories/</loc>
+    <loc>https://gyoza.in/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://gyoza.in/posts/</loc>
+    <loc>https://gyoza.in/posts/</loc>
     <lastmod>2019-01-26T16:20:20+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://gyoza.in/tags/</loc>
+    <loc>https://gyoza.in/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://gyoza.in/</loc>
+    <loc>https://gyoza.in/</loc>
     <lastmod>2019-01-26T16:20:20+09:00</lastmod>
     <priority>0</priority>
   </url>
