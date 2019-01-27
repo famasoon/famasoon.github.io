@@ -6,10 +6,24 @@
     <description>Recent content on Wake Up People</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sat, 26 Jan 2019 16:20:20 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 27 Jan 2019 19:00:43 +0900</lastBuildDate>
     
 	<atom:link href="https://gyoza.in/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Vagrant boxからQEMU用のVMを作る</title>
+      <link>https://gyoza.in/posts/box2qcow2/</link>
+      <pubDate>Sun, 27 Jan 2019 19:00:43 +0900</pubDate>
+      
+      <guid>https://gyoza.in/posts/box2qcow2/</guid>
+      <description>はじめに Windowsの評価用VMからQEMUに対応したVMを作りたくなった。 通常ならここでHyper-V用のマシンをダウンロードすればすんなりVMを作れるのだが、手が滑ってVagrant boxの方をダウンロードしてしまった。 再度ダウンロードするにも時間がかかるし帯域も食うのでboxファイルからQEMU対応のVMを作る。
+環境 Ubuntu 16.04でやっている。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux  ファイルを変換する 今回ダウンロードしたファイルはここからIE8 on Win7(x86)、Vagrantを選択してダウンロードしたもの。 ダウンロードしたzipを開くと中にboxファイルが入っている。 fileコマンドで確認すると、このboxファイルのフォーマットはgzip形式で圧縮されたファイルだった 。
+$ file win7.box win7.box: gzip compressed data, last modified: Wed Sep 23 13:40:40 2015, from Unix  gzipコマンドで解凍してみる。
+$ mv win7.box win7.gz \ gzip -d win7.gz  すると今度はtarファイルが出てくるのでtarコマンドで展開する。
+$ file win7 win7: POSIX tar archive $ mv win7 win7.</description>
+    </item>
     
     <item>
       <title>Hugo でブログを markdown で書く</title>
