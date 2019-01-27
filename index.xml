@@ -51,14 +51,5 @@ baseURL = &amp;quot;https://gyoza.in/&amp;quot; languageCode = &amp;quot;ja&amp;
  My interest lies in:  Reverse-engineering Pwning(Exploitation) Penetration test CTF Operating systems Virtualization  Contact  Twitter GitHub old blog  </description>
     </item>
     
-    <item>
-      <title>blog</title>
-      <link>https://gyoza.in/</link>
-      <pubDate>Sat, 26 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://gyoza.in/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>
