@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>CircleCIを使ってみた - Wake Up People</title>
+  
+  <meta name="description" content="CircleCIとは CircleCIは継続的インテグレーション(CI)をやってくれるサービス。 GitHubと連携してコードのテストとかデプロイができる。 今回はGitHubとCircleCIを連携させてみる。
+使い方  CircleCIでGitHubのアカウントを使ってログイン 自分のリポジトリが列挙されるのでCIしたいレポジトリを選択 あとは何かコードがプッシュされる度に設定ファイルに書いてあるjobをやってくれる。  設定ファイルの書き方 CIしたいリポジトリの下に.circleci/config.ymlを作成して設定を書き込む。 公式サンプルはこんな感じ。
+version: 2 jobs: build: docker: - image: circleci/&lt;language&gt;:&lt;version TAG&gt; steps: - checkout - run: &lt;command&gt; test: docker: - image: circleci/&lt;language&gt;:&lt;version TAG&gt; steps: - checkout - run: &lt;command&gt; workflows: version: 2 build_and_test: jobs: - build - test  docker イメージを作ってその中でビルドしてrunに書かれたコマンドを実行してくれる。 試しに昨日書いたHUGOでブログを書く作業の一部をやってもらう。 HUGOでブログを書く際はwriteブランチを切り、そこで編集をしているが毎回masterにプッシュしないといけないため大変ダルい。 という訳でそれをCircleCIにやってもらう。 書いた.circleci/config.ymlがコチラ。
+version: 2 jobs: build: docker: # specify the version - image: circleci/golang:1.9 # Specify service dependencies here if necessary # CircleCI maintains a library of pre-built images # documented at https://circleci.">
+  <meta name="author" content="FAMASoon">
+  
+  <link href="https://gyoza.in/css/font.css" rel="stylesheet">
+  <link href="https://gyoza.in/css/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://gyoza.in/css/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://gyoza.in/img/apple-touch-icon.png">
+  <link rel="icon" href="https://gyoza.in/img/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://gyoza.in/index.xml" title="Wake Up People">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://gyoza.in/">Wake Up People</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+        <li class="">
+          <a href="/about/">About me</a>
+        </li>
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">CircleCIを使ってみた</h1>
+    <p class="post-meta">FAMASoon · 2019.1.27</p>
+  </header>
+  <div class="post-content">
+
+<h2 id="circleciとは">CircleCIとは</h2>
+
+<p><a href="https://circleci.com/">CircleCI</a>は継続的インテグレーション(CI)をやってくれるサービス。
+GitHubと連携してコードのテストとかデプロイができる。
+今回はGitHubとCircleCIを連携させてみる。</p>
+
+<h2 id="使い方">使い方</h2>
+
+<ol>
+<li><a href="https://circleci.com/">CircleCI</a>でGitHubのアカウントを使ってログイン</li>
+<li>自分のリポジトリが列挙されるのでCIしたいレポジトリを選択</li>
+<li>あとは何かコードがプッシュされる度に設定ファイルに書いてあるjobをやってくれる。</li>
+</ol>
+
+<h3 id="設定ファイルの書き方">設定ファイルの書き方</h3>
+
+<p>CIしたいリポジトリの下に<code>.circleci/config.yml</code>を作成して設定を書き込む。
+<a href="https://circleci.com/docs/2.0/sample-config/">公式サンプル</a>はこんな感じ。</p>
+
+<pre><code class="language-yaml">version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/&lt;language&gt;:&lt;version TAG&gt;
+    steps:
+      - checkout
+      - run: &lt;command&gt;
+  test:
+    docker:
+      - image: circleci/&lt;language&gt;:&lt;version TAG&gt;
+    steps:
+      - checkout
+      - run: &lt;command&gt;
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
+</code></pre>
+
+<p>docker イメージを作ってその中でビルドして<code>run</code>に書かれたコマンドを実行してくれる。
+試しに昨日書いた<a href="https://gyoza.in/posts/firstpost/">HUGOでブログを書く作業</a>の一部をやってもらう。
+HUGOでブログを書く際は<code>write</code>ブランチを切り、そこで編集をしているが毎回<code>master</code>にプッシュしないといけないため大変ダルい。
+という訳でそれをCircleCIにやってもらう。
+書いた<code>.circleci/config.yml</code>がコチラ。</p>
+
+<pre><code class="language-yml">version: 2
+jobs:
+  build:
+    docker:
+      # specify the version
+      - image: circleci/golang:1.9
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    #### TEMPLATE_NOTE: go expects specific checkout path representing url
+    #### expecting it in the form of
+    ####   /go/src/github.com/circleci/go-tool
+    ####   /go/src/bitbucket.org/circleci/go-tool
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    steps:
+      - checkout
+      - run:
+          name: hugo install
+          command: |
+              go get -v github.com/spf13/hugo
+              git config --global user.name &quot;famasoon&quot;
+              git config --global user.email &quot;famasoon@gmail.com&quot;
+
+      - run:
+          name: push to master
+          command: |
+              hugo
+              git clone https://github.com/famasoon/famasoon.github.io.git
+              ls
+              cp -rp public/* famasoon.github.io/
+              cd famasoon.github.io
+              ls
+              git remote set-url origin git@github.com:famasoon/famasoon.github.io.git
+              git add .
+              git commit -m &quot;[circleci] publish&quot;
+              git push origin master
+</code></pre>
+
+<p>これでできるか試してみる。</p>
+</div>
+  <footer class="post-footer">
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Wake Up People</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://gyoza.in/js/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://gyoza.in/js/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+
