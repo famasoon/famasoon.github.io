@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Vagrant boxからQEMU用のVMを作る - Wake Up People</title>
+  
+  <meta name="description" content="はじめに Windowsの評価用VMからQEMUに対応したVMを作りたくなった。 通常ならここでHyper-V用のマシンをダウンロードすればすんなりVMを作れるのだが、手が滑ってVagrant boxの方をダウンロードしてしまった。 再度ダウンロードするにも時間がかかるし帯域も食うのでboxファイルからQEMU対応のVMを作る。
+環境 Ubuntu 16.04でやっている。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux  ファイルを変換する 今回ダウンロードしたファイルはここからIE8 on Win7(x86)、Vagrantを選択してダウンロードしたもの。 ダウンロードしたzipを開くと中にboxファイルが入っている。 fileコマンドで確認すると、このboxファイルのフォーマットはgzip形式で圧縮されたファイルだった 。
+$ file win7.box win7.box: gzip compressed data, last modified: Wed Sep 23 13:40:40 2015, from Unix  gzipコマンドで解凍してみる。
+$ mv win7.box win7.gz \ gzip -d win7.gz  すると今度はtarファイルが出てくるのでtarコマンドで展開する。
+$ file win7 win7: POSIX tar archive $ mv win7 win7.">
+  <meta name="author" content="FAMASoon">
+  
+  <link href="https://gyoza.in/css/font.css" rel="stylesheet">
+  <link href="https://gyoza.in/css/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://gyoza.in/css/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://gyoza.in/img/apple-touch-icon.png">
+  <link rel="icon" href="https://gyoza.in/img/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://gyoza.in/index.xml" title="Wake Up People">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://gyoza.in/">Wake Up People</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+        <li class="">
+          <a href="/about/">About me</a>
+        </li>
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">Vagrant boxからQEMU用のVMを作る</h1>
+    <p class="post-meta">FAMASoon · 2019.1.27</p>
+  </header>
+  <div class="post-content">
+
+<h2 id="はじめに">はじめに</h2>
+
+<p><a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">Windowsの評価用VM</a>からQEMUに対応したVMを作りたくなった。
+通常ならここで<a href="https://qiita.com/Hiroki_Kawakami/items/b18f6c50df4ce215e40d">Hyper-V用のマシンをダウンロードすればすんなりVMを作れる</a>のだが、手が滑ってVagrant boxの方をダウンロードしてしまった。
+再度ダウンロードするにも時間がかかるし帯域も食うのでboxファイルからQEMU対応のVMを作る。</p>
+
+<h2 id="環境">環境</h2>
+
+<p>Ubuntu 16.04でやっている。</p>
+
+<pre><code class="language-sh">$ uname -a
+Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+
+<h2 id="ファイルを変換する">ファイルを変換する</h2>
+
+<p>今回ダウンロードしたファイルは<a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">ここ</a>から<code>IE8 on Win7(x86)</code>、<code>Vagrant</code>を選択してダウンロードしたもの。
+ダウンロードしたzipを開くと中にboxファイルが入っている。
+<code>file</code>コマンドで確認すると、このboxファイルのフォーマットはgzip形式で圧縮されたファイルだった 。</p>
+
+<pre><code class="language-sh">$ file win7.box 
+win7.box: gzip compressed data, last modified: Wed Sep 23 13:40:40 2015, from Unix
+</code></pre>
+
+<p><code>gzip</code>コマンドで解凍してみる。</p>
+
+<pre><code class="language-sh">$ mv win7.box win7.gz \
+gzip -d win7.gz
+</code></pre>
+
+<p>すると今度はtarファイルが出てくるので<code>tar</code>コマンドで展開する。</p>
+
+<pre><code class="language-sh">$ file win7
+win7: POSIX tar archive
+
+$ mv win7 win7.tar \
+tar -xvf file.tar
+</code></pre>
+
+<p>展開すると<code>Vagrantfile</code>、<code>box-disk1.vmdk</code>、<code>box.ovf</code>が出てくる。
+この<code>box-disk1.vmdk</code>は下記コマンドでQEMUのVM用のディスクフォーマットのqcow2に変換できる。<a href="https://medium.com/dtoebe/convert-vmdk-to-qcow2-168c0166c86c">参考にしたサイト</a></p>
+
+<pre><code class="language-sh">$ qemu-img convert -f vmdk -O qcow2 box-disk1.vmdk win7.qcow2
+</code></pre>
+
+<p>しっかり変換できたか下記コマンドでQEMUからWindowsを起動し確認</p>
+
+<pre><code class="language-sh">$ qemu-system-i386 -m 4G images/win7.qcow2
+</code></pre>
+
+<p>画面が表示されたらうまくできている。</p>
+
+<h2 id="参考にしたサイト">参考にしたサイト</h2>
+
+<p><a href="https://medium.com/dtoebe/convert-vmdk-to-qcow2-168c0166c86c">https://medium.com/dtoebe/convert-vmdk-to-qcow2-168c0166c86c</a></p>
+</div>
+  <footer class="post-footer">
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Wake Up People</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://gyoza.in/js/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://gyoza.in/js/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+
