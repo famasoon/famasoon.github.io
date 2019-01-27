@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>blog - Wake Up People</title>
+  <title>Wake Up People</title>
   
   <meta name="description" content="">
   <meta name="author" content="FAMASoon">
@@ -23,10 +23,10 @@
   <link rel="alternate" type="application/atom+xml" href="https://gyoza.in/index.xml" title="Wake Up People">
   
 </head>
-<body class="single">
+<body class="list home">
   <header class="header">
     
-    <p class="title"><a href="https://gyoza.in/">Wake Up People</a></p>
+    <h1 class="title"><a href="https://gyoza.in/">Wake Up People</a></h1>
     
     <button class="menu-toggle" type="button"></button>
     <nav class="menu">
@@ -46,20 +46,86 @@
   </header>
   <main class="main">
 
-<article class="post post-view">
+
+
+
+
+
+
+
+
+<article class="post post-entry">
   <header class="post-header">
-    <h1 class="post-title">blog</h1>
-    <p class="post-meta">FAMASoon · 2019.1.26</p>
+    <span class="welcome-emoji">👉</span>
+    <h2 class="post-title">Vagrant boxからQEMU用のVMを作る</h2>
   </header>
-  <div class="post-content"></div>
+  <p class="post-summary">はじめに Windowsの評価用VMからQEMUに対応したVMを作りたくなった。 通常ならここでHyper-V用のマシンをダウンロードすればすんなりVMを作れるのだが、手が滑ってVagrant boxの方をダウンロードしてしまった。 再度ダウンロードするにも時間がかかるし帯域も食うのでboxファイルからQEMU対応のVMを作る。
+環境 Ubuntu 16.04でやっている。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux  ファイルを変換する 今回ダウンロードしたファイルはここからIE8 on Win7(x86)、Vagrantを選択してダウンロードしたもの。 ダウンロードしたzipを開くと中にboxファイルが入っている。 fileコマンドで確認すると、このboxファイルのフォーマットはgzip形式で圧縮されたファイルだった 。
+$ file win7.box win7.box: gzip compressed data, last modified: Wed Sep 23 13:40:40 2015, from Unix  gzipコマンドで解凍してみる。
+$ mv win7.box win7.gz \ gzip -d win7.gz  すると今度はtarファイルが出てくるのでtarコマンドで展開する。
+$ file win7 win7: POSIX tar archive $ mv win7 win7....</p>
   <footer class="post-footer">
-    
+    <p class="post-meta">2019.1.27</p>
   </footer>
-  
-  
-  
-  
+  <a class="post-link" href="https://gyoza.in/posts/box2qcow2/"></a>
 </article>
+
+
+
+
+<article class="post post-entry">
+  <header class="post-header">
+    
+    <h2 class="post-title">Hugo でブログを markdown で書く</h2>
+  </header>
+  <p class="post-summary">はじめに 最近、やったことや知ったことをブログでしっかりアウトプットしようと思い始めた。 しかしながらブログ記事を投稿しようとしても、エディタで色々と書いた後にブログの作成ページを開いて文章をコピペして見た目を整えて…と作業をしている内に面倒になってくる。 これではいけないとエディタで適当に書いた後にいい感じに勝手にブログにしてくれるツールを探していたらHugoを見つけた。 普段からブログの下書きはmarkdownで書いているし、GitHubで管理しているからGitHub pages を使えば楽に運用できそう。 そんなこんなでHugoでやっていくことにした。
+環境 Ubuntu 16.04 でやっていく。
+$ uname -a Linux ubuntu 4.15.0-43-generic #46~16.04.1-Ubuntu SMP Fri Dec 7 13:31:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linu  Hugo とは HUGO Golang製の静的サイトジェネレータ。 色々なテーマが使えるし記事のビルドも早い。
+Hugo をインストール 公式ドキュメント通りにやったらできた。
+$ snap install hugo  パスワードの入力を求められる。 それが終わればインストール完了。
+ブログ用のディレクトリを作成する 下記コマンドでhugo new site [サイト名]でHUGOの作業用ディレクトリができあがる。
+$ hugo new site blog  日本語向けに設定を変える さて、HUGOはデフォルトだと英語圏向けの設定になっている。 これでは少しツライので日本語向け設定にする。 設定ファイルは先に作成した作業用ディレクトリ直下のconfig.toml。 これを自分好みのモノに変更する。
+baseURL = &#34;https://gyoza.in/&#34; languageCode = &#34;ja&#34; title = &#34;Wake Up People&#34;  baseURLはHUGOで公開したいサイトのドメイン。 languageCodeは利用する言語圏に合わせて変更する。 ここでは&#34;ja&#34;に変更。 titleはブログのタイトル。自分好みの名前に変更(某鉄球使いは関係ない)...</p>
+  <footer class="post-footer">
+    <p class="post-meta">2019.1.26</p>
+  </footer>
+  <a class="post-link" href="https://gyoza.in/posts/firstpost/"></a>
+</article>
+
+
+
+
+<article class="post post-entry">
+  <header class="post-header">
+    
+    <h2 class="post-title">About me</h2>
+  </header>
+  <p class="post-summary">  JUST DO IT!!
+ My interest lies in:  Reverse-engineering Pwning(Exploitation) Penetration test CTF Operating systems Virtualization  Contact  Twitter GitHub old blog  ...</p>
+  <footer class="post-footer">
+    <p class="post-meta">2019.1.26</p>
+  </footer>
+  <a class="post-link" href="https://gyoza.in/about/"></a>
+</article>
+
+
+
+
+<article class="post post-entry">
+  <header class="post-header">
+    
+    <h2 class="post-title">blog</h2>
+  </header>
+  <p class="post-summary">...</p>
+  <footer class="post-footer">
+    <p class="post-meta">2019.1.26</p>
+  </footer>
+  <a class="post-link" href="https://gyoza.in/"></a>
+</article>
+
+
+
 </main>
 <footer class="footer">
   <span>&copy; 2019 Wake Up People</span>
