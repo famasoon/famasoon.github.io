@@ -54,9 +54,27 @@
 
 
 
-<article class="post first-entry">
+<article class="post post-entry">
   <header class="post-header">
-    <span class="welcome-emoji">👉</span>
+    
+    <h2 class="post-title">CircleCIを使ってみた</h2>
+  </header>
+  <p class="post-summary">CircleCIとは CircleCIは継続的インテグレーション(CI)をやってくれるサービス。 GitHubと連携してコードのテストとかデプロイができる。 今回はGitHubとCircleCIを連携させてみる。
+使い方  CircleCIでGitHubのアカウントを使ってログイン 自分のリポジトリが列挙されるのでCIしたいレポジトリを選択 あとは何かコードがプッシュされる度に設定ファイルに書いてあるjobをやってくれる。  設定ファイルの書き方 CIしたいリポジトリの下に.circleci/config.ymlを作成して設定を書き込む。 公式サンプルはこんな感じ。
+version: 2 jobs: build: docker: - image: circleci/&lt;language&gt;:&lt;version TAG&gt; steps: - checkout - run: &lt;command&gt; test: docker: - image: circleci/&lt;language&gt;:&lt;version TAG&gt; steps: - checkout - run: &lt;command&gt; workflows: version: 2 build_and_test: jobs: - build - test  docker イメージを作ってその中でビルドしてrunに書かれたコマンドを実行してくれる。 試しに昨日書いたHUGOでブログを書く作業の一部をやってもらう。 HUGOでブログを書く際はwriteブランチを切り、そこで編集をしているが毎回masterにプッシュしないといけないため大変ダルい。 という訳でそれをCircleCIにやってもらう。 書いた.circleci/config.ymlがコチラ。
+version: 2 jobs: build: docker: # specify the version - image: circleci/golang:1.9 # Specify service dependencies here if necessary # CircleCI maintains a library of pre-built images # documented at https://circleci....</p>
+  <footer class="post-footer">
+    <p class="post-meta">2019.1.27</p>
+  </footer>
+  <a class="post-link" href="https://gyoza.in/posts/circleci/"></a>
+</article>
+
+
+
+
+<article class="post post-entry">
+  <header class="post-header">
+    
     <h2 class="post-title">Hugo でブログを markdown で書く</h2>
   </header>
   <p class="post-summary">はじめに 最近、やったことや知ったことをブログでしっかりアウトプットしようと思い始めた。 しかしながらブログ記事を投稿しようとしても、エディタで色々と書いた後にブログの作成ページを開いて文章をコピペして見た目を整えて…と作業をしている内に面倒になってくる。 これではいけないとエディタで適当に書いた後にいい感じに勝手にブログにしてくれるツールを探していたらHugoを見つけた。 普段からブログの下書きはmarkdownで書いているし、GitHubで管理しているからGitHub pages を使えば楽に運用できそう。 そんなこんなでHugoでやっていくことにした。
