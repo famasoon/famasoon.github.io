@@ -6,22 +6,10 @@
     <description>Recent content on Wake Up People</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sun, 27 Jan 2019 10:54:36 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 26 Jan 2019 16:20:20 +0900</lastBuildDate>
     
 	<atom:link href="https://gyoza.in/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>CircleCIを使ってみた</title>
-      <link>https://gyoza.in/posts/circleci/</link>
-      <pubDate>Sun, 27 Jan 2019 10:54:36 +0900</pubDate>
-      
-      <guid>https://gyoza.in/posts/circleci/</guid>
-      <description>CircleCIとは CircleCIは継続的インテグレーション(CI)をやってくれるサービス。 GitHubと連携してコードのテストとかデプロイができる。 今回はGitHubとCircleCIを連携させてみる。
-使い方  CircleCIでGitHubのアカウントを使ってログイン 自分のリポジトリが列挙されるのでCIしたいレポジトリを選択 あとは何かコードがプッシュされる度に設定ファイルに書いてあるjobをやってくれる。  設定ファイルの書き方 CIしたいリポジトリの下に.circleci/config.ymlを作成して設定を書き込む。 公式サンプルはこんな感じ。
-version: 2 jobs: build: docker: - image: circleci/&amp;lt;language&amp;gt;:&amp;lt;version TAG&amp;gt; steps: - checkout - run: &amp;lt;command&amp;gt; test: docker: - image: circleci/&amp;lt;language&amp;gt;:&amp;lt;version TAG&amp;gt; steps: - checkout - run: &amp;lt;command&amp;gt; workflows: version: 2 build_and_test: jobs: - build - test  docker イメージを作ってその中でビルドしてrunに書かれたコマンドを実行してくれる。 試しに昨日書いたHUGOでブログを書く作業の一部をやってもらう。 HUGOでブログを書く際はwriteブランチを切り、そこで編集をしているが毎回masterにプッシュしないといけないため大変ダルい。 という訳でそれをCircleCIにやってもらう。 書いた.circleci/config.ymlがコチラ。
-version: 2 jobs: build: docker: # specify the version - image: circleci/golang:1.9 # Specify service dependencies here if necessary # CircleCI maintains a library of pre-built images # documented at https://circleci.</description>
-    </item>
     
     <item>
       <title>Hugo でブログを markdown で書く</title>

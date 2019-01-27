@@ -29,10 +29,8 @@ jobs:
           command: |
               hugo
               git clone https://github.com/famasoon/famasoon.github.io.git
-              ls
               cp -rp public/* famasoon.github.io/
               cd famasoon.github.io
-              ls
               git remote set-url origin git@github.com:famasoon/famasoon.github.io.git
               git add .
               git commit -m "[circleci] publish"
