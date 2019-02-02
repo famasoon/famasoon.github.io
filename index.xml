@@ -6,10 +6,29 @@
     <description>Recent content on Wake Up People</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sun, 27 Jan 2019 19:00:43 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 02 Feb 2019 19:01:23 +0900</lastBuildDate>
     
 	<atom:link href="https://gyoza.in/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SandsifterでCPUをファジングする</title>
+      <link>https://gyoza.in/posts/sandsifter/</link>
+      <pubDate>Sat, 02 Feb 2019 19:01:23 +0900</pubDate>
+      
+      <guid>https://gyoza.in/posts/sandsifter/</guid>
+      <description>概要 ファジングしていますか？ ユーザランドのソフト、カーネルとファジング対象は数あれど、より高い権限を持った存在 - CPU - のファジングツールはなかなかお目にかかれない。 今回はそんなCPUをファジングするsandsifterを紹介します。
+Sandsifterとは sandsifterとはx86プロセッサーに仕込まれた隠し命令やバグを発見するために開発されたファジングツール。 ツールの中にはファジングした記録を見やすくしてくれるPythonスクリプトも同梱されていまる。
+ 仮想化ソフトのバグ(ハイパーバイザやエミュレータ,ディスアセンブラとかのバグ) ハードウェアのバグ(PentiumのFDIV命令起因のバグとか) CPUの隠しコマンド(メーカ向けに出されている非公開命令)  を見つけることができる。
+Sandsifter公開当時の資料を見ると大量のバグを発見している。 個人的に面白いと思ったのはディスアセンブラのバグの部分で、こんな命令を埋め込まれた日にはマルウェア解析とか面倒そうだなと思った。
+使ってみる 使い方はとても簡単でいくつかライブラリをインストールして実行するだけ。 注意する点といえば
+ Python3で実行するときにエラーを吐く ファザーのビルドが失敗する時がある  どちらも既知の問題っぽい。
+https://github.com/xoreaxeaxeax/sandsifter/issues/2 https://github.com/xoreaxeaxeax/sandsifter/issues/29
+フォークして適当に直したコードを上げておいた。 https://github.com/famasoon/sandsifter
+前置きが長くなったが実際に使ってみる。
+環境 QEMU上でUbuntu 18.04を動かしている
+手順  必要なライブラリをインストール ビルド Pythonスクリプト実行  sudo apt install libcapstone3 libcapstone-dev sudo pip3 install capstone git clone https://github.com/famasoon/sandsifter cd sandsifter make sudo python3 ./sifter.py --unk --dis --len --sync --tick -- -P1 -t  これだけでCPUのファジングができる。 便利な世の中になったものですね。 もちろん変な命令を見つけて解析する部分は大変ですが。</description>
+    </item>
     
     <item>
       <title>Vagrant boxからQEMU用のVMを作る</title>
