@@ -6,10 +6,21 @@
     <description>Recent content on Wake Up People</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sat, 02 Feb 2019 19:01:23 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 23 Feb 2019 20:30:21 +0900</lastBuildDate>
     
 	<atom:link href="https://gyoza.in/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GitHubでスターしたリポジトリをランダムに出力する</title>
+      <link>https://gyoza.in/posts/randstar/</link>
+      <pubDate>Sat, 23 Feb 2019 20:30:21 +0900</pubDate>
+      
+      <guid>https://gyoza.in/posts/randstar/</guid>
+      <description>まえがき 自分にはGitHubで気になったレポジトリにすぐスターを付けてしまう癖があります。 現在、自分のGitHubアカウントのスターは二千弱(2019/02/23 現在) 今後も増えていくでしょう。 さて、スターが増えて何が困るかというと、それはもう単純でどのレポジトリをスターしたか忘れてしまうのです。 後で見る、後で見ると先延ばしにしている内にスターが増えていき、結局どれを見るつもりだったんだっけ？と途方に暮れる毎日。 スターのリストを片っ端から見ていけば良いのですが、これもまたスターした日付順、スターが多い順など何でソートをしようか悩んでしまいます。 せっかくスターしたレポジトリ、こんなことで悩んで時間を使うよりも、実際に使ってみたり、コードを読み書きしたり、紹介なり何なりをして時間を使うほうが有益だと思います。 こんな時に&amp;rdquo;いま確認すべきスターしたレポジトリ&amp;rdquo;を示してくれるモノあれば悩まくて良いなと思い、タイトル通りのプログラムを書きました。
+内容 ここにプログラムは置いておきます。 そんな大層な内容のものではなく30行ほど。 ユーザ名を引数に取り、そのユーザがスターしたレポジトリをapiを叩いて取得。 いくつか出てくると思うのでその中から1つだけ選んで出力するだけとなっている。
+import urllib.request import json from random import choice from sys import argv if len(argv) != 2: print(&amp;#34;Usage: python3 randstar.py &amp;lt;UserName&amp;gt;&amp;#34;) exit(0) user_name = argv[1] url = &amp;#34;https://api.github.com/users/&amp;#34; + user_name + &amp;#34;/starred&amp;#34; req = urllib.request.Request(url) body = &amp;#34;&amp;#34; try: with urllib.request.urlopen(req) as res: body = res.read().decode(&amp;#39;utf-8&amp;#39;) except Exception as e: print(&amp;#34;ERROR: {}&amp;#34;.format(e)) exit(1) json_obj = json.</description>
+    </item>
     
     <item>
       <title>SandsifterでCPUをファジングする</title>

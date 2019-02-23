@@ -57,6 +57,23 @@
 <article class="post post-entry">
   <header class="post-header">
     
+    <h2 class="post-title">GitHubでスターしたリポジトリをランダムに出力する</h2>
+  </header>
+  <p class="post-summary">まえがき 自分にはGitHubで気になったレポジトリにすぐスターを付けてしまう癖があります。 現在、自分のGitHubアカウントのスターは二千弱(2019/02/23 現在) 今後も増えていくでしょう。 さて、スターが増えて何が困るかというと、それはもう単純でどのレポジトリをスターしたか忘れてしまうのです。 後で見る、後で見ると先延ばしにしている内にスターが増えていき、結局どれを見るつもりだったんだっけ？と途方に暮れる毎日。 スターのリストを片っ端から見ていけば良いのですが、これもまたスターした日付順、スターが多い順など何でソートをしようか悩んでしまいます。 せっかくスターしたレポジトリ、こんなことで悩んで時間を使うよりも、実際に使ってみたり、コードを読み書きしたり、紹介なり何なりをして時間を使うほうが有益だと思います。 こんな時に”いま確認すべきスターしたレポジトリ”を示してくれるモノあれば悩まくて良いなと思い、タイトル通りのプログラムを書きました。
+内容 ここにプログラムは置いておきます。 そんな大層な内容のものではなく30行ほど。 ユーザ名を引数に取り、そのユーザがスターしたレポジトリをapiを叩いて取得。 いくつか出てくると思うのでその中から1つだけ選んで出力するだけとなっている。
+import urllib.request import json from random import choice from sys import argv if len(argv) != 2: print(&#34;Usage: python3 randstar.py &lt;UserName&gt;&#34;) exit(0) user_name = argv[1] url = &#34;https://api.github.com/users/&#34; &#43; user_name &#43; &#34;/starred&#34; req = urllib.request.Request(url) body = &#34;&#34; try: with urllib.request.urlopen(req) as res: body = res.read().decode(&#39;utf-8&#39;) except Exception as e: print(&#34;ERROR: {}&#34;.format(e)) exit(1) json_obj = json....</p>
+  <footer class="post-footer">
+    <p class="post-meta">2019.2.23</p>
+  </footer>
+  <a class="post-link" href="https://gyoza.in/posts/randstar/"></a>
+</article>
+
+
+
+
+<article class="post post-entry">
+  <header class="post-header">
+    
     <h2 class="post-title">SandsifterでCPUをファジングする</h2>
   </header>
   <p class="post-summary">概要 ファジングしていますか？ ユーザランドのソフト、カーネルとファジング対象は数あれど、より高い権限を持った存在 - CPU - のファジングツールはなかなかお目にかかれない。 今回はそんなCPUをファジングするsandsifterを紹介します。

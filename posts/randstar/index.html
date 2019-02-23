@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>GitHubでスターしたリポジトリをランダムに出力する - Wake Up People</title>
+  
+  <meta name="description" content="まえがき 自分にはGitHubで気になったレポジトリにすぐスターを付けてしまう癖があります。 現在、自分のGitHubアカウントのスターは二千弱(2019/02/23 現在) 今後も増えていくでしょう。 さて、スターが増えて何が困るかというと、それはもう単純でどのレポジトリをスターしたか忘れてしまうのです。 後で見る、後で見ると先延ばしにしている内にスターが増えていき、結局どれを見るつもりだったんだっけ？と途方に暮れる毎日。 スターのリストを片っ端から見ていけば良いのですが、これもまたスターした日付順、スターが多い順など何でソートをしようか悩んでしまいます。 せっかくスターしたレポジトリ、こんなことで悩んで時間を使うよりも、実際に使ってみたり、コードを読み書きしたり、紹介なり何なりをして時間を使うほうが有益だと思います。 こんな時に&rdquo;いま確認すべきスターしたレポジトリ&rdquo;を示してくれるモノあれば悩まくて良いなと思い、タイトル通りのプログラムを書きました。
+内容 ここにプログラムは置いておきます。 そんな大層な内容のものではなく30行ほど。 ユーザ名を引数に取り、そのユーザがスターしたレポジトリをapiを叩いて取得。 いくつか出てくると思うのでその中から1つだけ選んで出力するだけとなっている。
+import urllib.request import json from random import choice from sys import argv if len(argv) != 2: print(&#34;Usage: python3 randstar.py &lt;UserName&gt;&#34;) exit(0) user_name = argv[1] url = &#34;https://api.github.com/users/&#34; &#43; user_name &#43; &#34;/starred&#34; req = urllib.request.Request(url) body = &#34;&#34; try: with urllib.request.urlopen(req) as res: body = res.read().decode(&#39;utf-8&#39;) except Exception as e: print(&#34;ERROR: {}&#34;.format(e)) exit(1) json_obj = json.">
+  <meta name="author" content="FAMASoon">
+  
+  <link href="https://gyoza.in/css/font.css" rel="stylesheet">
+  <link href="https://gyoza.in/css/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://gyoza.in/css/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://gyoza.in/img/apple-touch-icon.png">
+  <link rel="icon" href="https://gyoza.in/img/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.54.0" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://gyoza.in/index.xml" title="Wake Up People">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://gyoza.in/">Wake Up People</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+        <li class="">
+          <a href="/about/">About me</a>
+        </li>
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">GitHubでスターしたリポジトリをランダムに出力する</h1>
+    <p class="post-meta">FAMASoon · 2019.2.23</p>
+  </header>
+  <div class="post-content">
+
+<h2 id="まえがき">まえがき</h2>
+
+<p>自分にはGitHubで気になったレポジトリにすぐスターを付けてしまう癖があります。
+現在、自分の<a href="https://github.com/stars/famasoon">GitHubアカウントのスター</a>は二千弱(2019/02/23 現在)
+今後も増えていくでしょう。
+さて、スターが増えて何が困るかというと、それはもう単純でどのレポジトリをスターしたか忘れてしまうのです。
+後で見る、後で見ると先延ばしにしている内にスターが増えていき、結局どれを見るつもりだったんだっけ？と途方に暮れる毎日。
+スターのリストを片っ端から見ていけば良いのですが、これもまたスターした日付順、スターが多い順など何でソートをしようか悩んでしまいます。
+せっかくスターしたレポジトリ、こんなことで悩んで時間を使うよりも、実際に使ってみたり、コードを読み書きしたり、紹介なり何なりをして時間を使うほうが有益だと思います。
+こんな時に&rdquo;いま確認すべきスターしたレポジトリ&rdquo;を示してくれるモノあれば悩まくて良いなと思い、タイトル通りのプログラムを書きました。</p>
+
+<h2 id="内容">内容</h2>
+
+<p>ここにプログラムは置いておきます。
+そんな大層な内容のものではなく30行ほど。
+ユーザ名を引数に取り、そのユーザがスターしたレポジトリをapiを叩いて取得。
+いくつか出てくると思うのでその中から1つだけ選んで出力するだけとなっている。</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> urllib.request
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">from</span> random <span style="color:#f92672">import</span> choice
+<span style="color:#f92672">from</span> sys <span style="color:#f92672">import</span> argv
+
+<span style="color:#66d9ef">if</span> len(argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Usage: python3 randstar.py &lt;UserName&gt;&#34;</span>)
+    exit(<span style="color:#ae81ff">0</span>)
+
+user_name <span style="color:#f92672">=</span> argv[<span style="color:#ae81ff">1</span>]
+url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://api.github.com/users/&#34;</span> <span style="color:#f92672">+</span> user_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/starred&#34;</span>
+
+req <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>Request(url)
+body <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+
+<span style="color:#66d9ef">try</span>:
+    <span style="color:#66d9ef">with</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlopen(req) <span style="color:#66d9ef">as</span> res:
+        body <span style="color:#f92672">=</span> res<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;ERROR: {}&#34;</span><span style="color:#f92672">.</span>format(e))
+    exit(<span style="color:#ae81ff">1</span>)
+
+json_obj <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(body)
+<span style="color:#66d9ef">try</span>:
+    html_url <span style="color:#f92672">=</span> choice(json_obj)[<span style="color:#e6db74">&#39;html_url&#39;</span>]
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">IndexError</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;That user has not starred&#34;</span>)
+    exit(<span style="color:#ae81ff">1</span>)
+
+<span style="color:#66d9ef">print</span>(html_url)</code></pre></div>
+
+<p>実行すると素直にURLだけ出力する。</p>
+
+<pre><code class="language-sh">$ python3 randstar.py famasoon
+https://github.com/Neo23x0/signature-base
+</code></pre>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>書いていて気がついたのですが、<code>https://api.github.com/users/:username/starred</code>って直近でスターしたレポジトリを30個返すだけなんですね。
+数を制限するのは仕方がないし、ソートも何か適当なものをかけておかないといけないのはわかるけど、結局web上で確認するのと大して変わらないですねコレ。
+ともあれ、これでスターしたレポジトリを適当に出すことができました。
+ユーザがスターしたレポジトリを全て列挙する方法を知っている方がいましたら、TwitterのリプライなりIssueを立てたりで教えてください。</p>
+
+<p>さて、GitHubでおもしろいプロジェクトを漁るぞー</p>
+</div>
+  <footer class="post-footer">
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Wake Up People</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://gyoza.in/js/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://gyoza.in/js/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+
