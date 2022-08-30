@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://famasoon.github.io/sitemap.xml

@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>x64.moe</title>
+    <link>https://famasoon.github.io/</link>
+    <description>Recent content on x64.moe</description>
+    <image>
+      <url>https://famasoon.github.io/static/famasoon.jpg</url>
+      <link>https://famasoon.github.io/static/famasoon.jpg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <lastBuildDate>Tue, 23 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Note] How to build v8 for AFL</title>
+      <link>https://famasoon.github.io/posts/afl/</link>
+      <pubDate>Tue, 23 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/afl/</guid>
+      <description>I built v8 to run fuzzing in AFL. First, install depot_tools using the link below. And then download the v8 source code.
+https://v8.dev/docs/source-code
+Next, create an afl directory in the v8/third_party directory and download the contents of the following link.
+https://chromium.googlesource.com/chromium/src/+/refs/heads/master/third_party/afl/
+Next, go to the v8 directory and execute the following command.
+gn gen out/libfuzzer &amp;#39;--args=use_afl=true is_asan=true optimize_for_fuzzing = true &amp;#39; --check ninja -C out/libfuzzer d8 afl-fuzz -D -i third_party/afl/src/testcases/others/js/ -o fuzzout -M fuzz1 .</description>
+    </item>
+    
+    <item>
+      <title>twintについて使ってみる</title>
+      <link>https://famasoon.github.io/posts/twint/</link>
+      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/twint/</guid>
+      <description>Twint について使ってみる(初級編) 何をするにも現代人はすぐにTwintterに情報を投稿する。
+それはそれで良いのだが、ごくまれにどのような情報を投稿しているか・フォロー/フォロワーは・たくさんRTしている人は誰かなんとなく調べたくなってしまう時がある。
+Twitterに連絡してのAPI利用許可を貰えばいいだろうと思うが、昔と違い今はAPI申請も難しくなっている(ぶっちゃけ面倒)
+そんなわけでどうにかしてAPIを使わずにTwitterの情報を集めるツールがないか探したところTwintに出会った。
+特定のユーザーからツイートを収集したり、特定のトピック、ハッシュタグやトレンドに関連するツイートを収集することができる(ツイート取得3,200件の壁はあるものの) しかもプロキシ使い放題とは流石だ(未検証)
+そんなわけで今回はTwintを利用するところまでを紹介する。
+インストール GitHubに書かれている内容そのままで簡単にインストールできる。
+pipでインストール pip3 install twint
+使ってみる 対象ユーザの最近のツイートとフォロワーをcsvファイルにしてみる。 今回は私のスクリーンネームFAMASoonで検索してみる。
+import twint def get_followers(username): c = twint.Config() c.Username = username c.Profile_full = True c.Store_csv = True c.Output = &amp;#34;recent_followers.csv&amp;#34; twint.run.Followers(c) def get_recent_tweets(username): c = twint.Config() c.Username = username c.Store_csv = True c.Output = &amp;#34;recent_tweets.csv&amp;#34; twint.run.Search(c) def main(): # ここに任意のスクリーンネームを入力 user_name = &amp;#34;FAMASoon&amp;#34; get_recent_tweets(user_name) get_followers(user_name) if __name__ == &amp;#34;__main__&amp;#34;: main() recent_followers.csvやrecent_tweets.csvという名前でフォロワーやツイートがリストアップされているだろう。
+所感 結構簡単に使えた。 特定ユーザの動向をヲチするときとかに使えそう。</description>
+    </item>
+    
+    <item>
+      <title>How to use crashwalk</title>
+      <link>https://famasoon.github.io/posts/crashwalk/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/crashwalk/</guid>
+      <description>How to use crashwalk crashwalk can check to quickly determine which crashes may lead to exploitable or not.
+Install Install gdb and golang by apt Download exploitable.py Install crashwalk $ sudo apt install gdb golang $ mkdir ~/src $ cd ~/src $ git clone https://github.com/jfoote/exploitable $ go get -u github.com/bnagy/crashwalk/cmd/... Usage crashwalk can be used immediately if there is a path of AFL crash outputs.
+For example, I will show using crashwalk on .</description>
+    </item>
+    
+    <item>
+      <title>Jupyter Notebook の導入</title>
+      <link>https://famasoon.github.io/posts/jupyter/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/jupyter/</guid>
+      <description>Jupyter Notebook の導入 はじめに Mac を買ったので新しく環境構築しました。 その際に行った作業のメモです。
+Jupyter Notebook とは Python の対話的な実行環境のこと。 コードの共有や結果の可視化が楽にできます。 Markdownでメモを添えることもできます、便利ですね。 実はPython 以外も扱えます。 詳細は公式を見てください。
+インストール Jupyter Notebook pip3 install jupyter で簡単にインストールできます。
+Jupyter extension これだけでも便利ですが、さらに便利にできる拡張機能群があるのでインストールします。 ソースコードはここ
+pip3 install jupyter_contrib_nbextensions jupyter contrib nbextension install --user これで拡張機能が使えるようになりました。 http://localhost:8888/nbextensions で拡張機能を選択できるようになっています。 ちなみに自分はVimのキーバインドを使うために&amp;quot;Select CodeMirror Keymap&amp;quot;を、コードの展開とかを良い感じにやってくれる&amp;quot;Codefolding&amp;quot;と&amp;quot;Codefolding in Editor&amp;quot;を使っています。
+jupyter-themes 少し暗めの色が好きなのでテーマカラーを変更できる jupyter-themes をインストールしてみます。
+pip3 install jupyterthemes jt -t oceans16 -T -N これでテーマを変更することができました。 今回はoceans16を選択したが他にもテーマはあります。 下記コマンドで使用可能なテーマがリストとして出力されます。
+jt -l お好みのテーマを選んでみてください。
+おわりに Jupyter Notebook の環境構築をやってみました。 本当に便利なので使う人増えて欲しいですね。 何か良い拡張機能を知っている方は良ければ教えてください。</description>
+    </item>
+    
+    <item>
+      <title>Malware Analysis links</title>
+      <link>https://famasoon.github.io/posts/malwareanalysislinks/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/malwareanalysislinks/</guid>
+      <description>I published a collection of links related to malware analysis. Please use it. Best Regards :)
+Links Tracker Haruko MalwareBazaar CyberCrime Tracker VXvault AZORult Tracker CCAM CyberCrime Tracker ATM CyberCrime Tracker Feodo Tracker URLhaus viriback RAT Tracker C2 Panel Tracker INQUEST LABS Source MALWARE-TRAFFIC-ANALYSIS.NET Twitter IoC Sandbox/Analyzer manalyzer VirusTotal Any.Run RE techniques THISISSECURITY XyliBox Fumik0_&amp;rsquo;s box MalwareTech Malware don&amp;rsquo;t need coffee nao_sec ZEROPHAGE SentinelLABS blog 0ffset MalwareLab.pl Research Notes Malware Reversing Encyclopedia malpedia ATT&amp;amp;CK Report APT_REPORT CyberThreatIntel Community OTX VirusBay kernelmode.</description>
+    </item>
+    
+    <item>
+      <title>OpenFaas で function を自作する</title>
+      <link>https://famasoon.github.io/posts/openfaas/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/openfaas/</guid>
+      <description>OpenFaas で function を自作する OpenFaas で function を実装してデプロイしてみる。 OpenFaas のセットアップについてはこちら
+function をビルドする 下記コマンドで function の実装ができる
+$ faas-cli new --lang &amp;lt;実装したい言語&amp;gt; &amp;lt;functionの名前&amp;gt; 今回は入力されたドメインの whois 情報を出力する function を Golang で実装してみる。 faas-cli で function を作成すると諸々の設定ファイルや function を実装するためのファイルが生成される。
+$ faas-cli new --lang go whois $ ls template whois whois.yml ファイルの中身を確認する whois.yml ファイルには実装する function に関する設定が書かれている。
+provider: name: faas gateway: http://127.0.0.1:8080 functions: whois: lang: go handler: ./whois image: whois:latest whois/handler.go ファイルには function の処理が書かれている。
+package function import ( &amp;#34;fmt&amp;#34; ) // Handle a serverless request func Handle(req []byte) string { return fmt.</description>
+    </item>
+    
+    <item>
+      <title>OpenFaas をセットアップして function を呼び出す</title>
+      <link>https://famasoon.github.io/posts/openfaas2/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/openfaas2/</guid>
+      <description>OpenFaas をセットアップして function を呼び出す AWS lambda を何となく触ってみて、ベンダロックインしない形で同じような機能を実現できないかなと思って色々と調べているとOpenFaasというOSSを見つけた。 AWS lambda とAPI Gatewayをまとめた感じの処理をdockerを使って実現するプロジェクトのようだ。 試しに触ってみたのでその記録を書く。
+OpenFaas とは Serverless な処理を Docker や Kubernetes で実装するためのフレームワーク。 公式で日本語化されたチュートリアルがある link
+OpenFaas のセットアップ 必要なソフトは下記の通り
+Docker まずは OpenFaas を動かすための swarm をセットアップ
+$ docker swarm init openfaas-cli のインストール 次に OpenFaas を動かすためのCLIコマンドをインストールする。 ここでインストールするfaas-cliを使用すればCLIからfunctionの新規作成、ビルド、デプロイ等の操作ができるようになる。 mac環境なら以下のコマンドでインストール
+$ brew install faas-cli Linux とかの環境なら下記のコマンドでインストール
+$ curl -sL cli.openfaas.com | sudo sh インストールされたか確認
+$ faas-cli version OpenFaasのデプロイ GitHub から最新版の OpenFaas をダウンロードして Docker swarm で起動させる。
+$ git clone https://github.</description>
+    </item>
+    
+    <item>
+      <title>retdecでHello, worldをデコンパイルする</title>
+      <link>https://famasoon.github.io/posts/retdec/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/retdec/</guid>
+      <description>retdec とは retdec とはセキュリティ企業のavast社が公開しているデコンパイラです。 詳細はavast社のブログを参照(アバストが自社のマシンコード逆コンパイラをオープンソース化) ちゃんとデコンパイルするのか気になったのでインストールから&amp;quot;Hello, world&amp;quot;をデコンパイルする所まで書きます。
+実行環境 当記事は下記環境で実行した結果を書いています。
+$ uname -a Linux ubuntu 4.15.0-36-generic #39~16.04.1-Ubuntu SMP Tue Sep 25 08:59:23 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux $ gcc --version gcc (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609 $ docker -v Docker version 18.06.1-ce, build e68fc7a retdec をインストール dockerを使用してビルドする。 ビルドが終わるまでそこそこ時間がかかるのでコーヒーでも飲んで待っていましょう。
+$ git clone https://github.com/avast-tl/retdec $ cd retdec $ docker build -t retdec . デコンパイルしてみる ビルドが終わったらデコンパイルできるか試してみます。 まずはサンプルとして&amp;quot;Hello, world&amp;quot;を書きます。
+#include &amp;lt;stdio.h&amp;gt; int main(int argc, char *argv[]){ printf(&amp;#34;Hello, world\n&amp;#34;); return 0; } 次にこのコードをコンパイルします。 一点、注意が必要でretdecはx86-64のコードには対応していません。 なので今回はx86でコンパイルします。</description>
+    </item>
+    
+    <item>
+      <title>Serverless Framework でHello world</title>
+      <link>https://famasoon.github.io/posts/serverlessframework/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/serverlessframework/</guid>
+      <description>概要 Serverless Framework とはサーバレスなアプリケーションを作成、デプロイが簡単にできるツール。 AWS Lambda や Google Cloud Functions といったFaasの実装や、API Gateway の構成変更が容易にできる。 今回はAPI Gateway経由でAWS Lambdaを呼び出してみる。
+環境構築 インストール まずは Serverless Frameworkをインストール。
+$ npm install serverless -g インストールが完了したらデプロイする際に必要なAWSのユーザ情報を作成する。
+IAMユーザの作成・登録 Serverless Framework をAWSで利用するには色々と権限を付与したユーザを用意する必要がある。 公式でセットアップ手順が記載されているのでその通りにユーザを作成する。
+AWSのIAM管理コンソールを開く &amp;ldquo;ユーザを追加&amp;quot;をクリックする 適当にユーザ名を入力する。ここでは&amp;quot;serverless-agent&amp;quot;とする。 &amp;ldquo;プログラムによるアクセス&amp;quot;にチェックボックスを入れ&amp;quot;次のステップ&amp;quot;をクリック &amp;ldquo;既存のポリシーを直接アタッチ&amp;quot;から&amp;quot;ポリシーの作成を選択&amp;rdquo; JSONをクリックし公式で案内しているgistから内容をコピペして上書き ポリシーの確認をクリック 適当にポリシー名を入力する。ここでは&amp;quot;serverless-agent-policy&amp;quot;とする。入力したらポリシーの作成をクリック。 ポリシーが作成されたらユーザを追加の画面に戻ってポリシーをリロード ポリシーから&amp;quot;serverless-agent-policy&amp;quot;を選択して&amp;quot;次のステップ&amp;quot;をクリック 次のステップ: 確認をクリック ユーザの作成をクリック ユーザの作成が成功したらアクセスキーIDとシークレットアクセスキーが表示されるので下記コマンドで Serverless Framework にユーザ情報を登録する。 $ serverless config credentials --provider aws --key &amp;lt;アクセスキーID&amp;gt; --secret &amp;lt;シークレットアクセスキー&amp;gt; これで Serverless Frameworkからサーバレスアプリケーションをデプロイするための準備ができた。
+アプリケーションの作成 今回はPython 3.7 でアプリケーション(といっても中身はHello world)を作る。 Serverless Framework はslsという短いコマンドから操作できるので、これを用いてアプリケーションを実装していく。</description>
+    </item>
+    
+    <item>
+      <title>Vuepress で生成したWebサイトを Now にデプロイしてみる</title>
+      <link>https://famasoon.github.io/posts/vuepress/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/vuepress/</guid>
+      <description>Vuepress とは Vuepress とは Vue で作られた静的サイトジェネレータのこと。 静的サイトジェネレータといえば有名どころは
+jekyll Hugo などが挙げられる。 Vueで静的にサイトを作るのなら Nuxt.js でも良さそうにも思えるが、Vuepressは技術文書を静的に管理することに焦点を当て作成している。 why-not Vuepress インストール 下記コマンドでインストールできる。
+$ npm install -g vuepress Vuepress を使ってみる Vuepress はREADME.mdを起点にサイトを生成するようになっている。 実際にどのように動作するか下記のREADME.mdを作成して確認する。
+# h1 ## h2 ### h3 #### h4 ##### h5 Headers ## List * Item 1 * Item 2 * Item 3 + Item 3-1 + Item 3-2 ## Link [Vuepress](https://vuepress.vuejs.org) README.mdのあるディレクトリで下記コマンドで動作を確認できる。
+$ vuepress dev HTMLファイル等を生成するには下記コマンドを入力する。
+$ vuepress build Now とは Nowとは簡単にWebアプリをデプロイできるサービスのこと。 CLIからコマンド一回でデプロイすることができる。 今回作成したサイトをさくっと公開するために使ってみる。 このデプロイの仕方はNow公式でも書かれている。 nowコマンドの使い方</description>
+    </item>
+    
+    <item>
+      <title>x64の関数呼び出し</title>
+      <link>https://famasoon.github.io/posts/x64abi/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/x64abi/</guid>
+      <description>概要 関数呼び出しの解説でよくあるx86プログラムみたいな動きをx64でやってみる
+環境 $ uname -a Linux ubuntu-xenial 4.4.0-97-generic #120-Ubuntu SMP Tue Sep 19 17:28:18 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux $ lsb_release -a No LSB modules are available. Distributor ID: Ubuntu Description: Ubuntu 16.04.3 LTS Release: 16.04 Codename: xenial $ gcc --version gcc (Ubuntu 5.4.0-6ubuntu1~16.04.5) 5.4.0 20160609 x86でコンパイル まずはx86でのスタックの動きを書く。 まずは下のコードを&amp;quot;stack_test.c&amp;quot;として保存する。
+void test_func(int a, int b, int c, int d){ int x, y, z; x = a + b; y = c + d; z = x + y; } int main(void){ test_func(1, 2, 3, 4); return 0; } これをコンパイルして&amp;quot;x86&amp;quot;というファイルで保存し、ディスアセンブルする。</description>
+    </item>
+    
+    <item>
+      <title>Extract Windows KB</title>
+      <link>https://famasoon.github.io/posts/windowskbpatch/</link>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/windowskbpatch/</guid>
+      <description>手順 Windows Updateのセキュリティパッチから差分を撮ってみる 問題となっているCVE番号で https://portal.msrc.microsoft.com/en-us/security-guidance を調べる(今回例としてはCVE-2019-0786について) 当該脆弱性のアドバイザリがあればそれを開く https://portal.msrc.microsoft.com/ja-JP/security-guidance/advisory/CVE-2019-0786 &amp;ldquo;Secuirty Update&amp;quot;から回答のアップデートをダウンロード msuファイルをダウンロード ダウンロードしたmすふぁいるを展開する wusa.exe C:\installl.msu /extract:c:\test\ または
+expand /f:* C:\install.msu C:\test\ msuファイルを展開して出てきたcabファイルを更に展開 expand -F:* update.cab C:&amp;lt;target_dir&amp;gt; Ghidraで差分を確認 Ghidra Pro book に載っているので要参照 終わり</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox Walkthrough - Granny</title>
+      <link>https://famasoon.github.io/posts/granny/</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/granny/</guid>
+      <description>About Granny Granny
+Nmap Port scan revelals IIS 6 running on this machine.
+# nmap -sV -sT -sC -o nmapinitial 10.10.10.15 Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-25 10:55 EST Nmap scan report for 10.10.10.15 Host is up (0.22s latency). Not shown: 999 filtered ports PORT STATE SERVICE VERSION 80/tcp open http Microsoft IIS httpd 6.0 | http-methods: |_ Potentially risky methods: TRACE DELETE COPY MOVE PROPFIND PROPPATCH SEARCH MKCOL LOCK UNLOCK PUT |_http-server-header: Microsoft-IIS/6.</description>
+    </item>
+    
+    <item>
+      <title>Note - Links for OSINT</title>
+      <link>https://famasoon.github.io/posts/linksforosint/</link>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/linksforosint/</guid>
+      <description>Links Link Title Note https://domainwat.ch/ DomainWatch Show whois and domains info https://www.similarweb.com/ja SimilarWeb Analyze web site https://myip.ms/ Myip.ms Show IP address or domain&amp;rsquo;s info https://website.informer.com/ website.informer.com Show web site information https://domainbigdata.com/ DomainBigData Show domains information http://www.ymkp.com/ 域名科普网 Search whois information that focused on Chinese area https://tools.digitalpoint.com/cookie-search Cookie Search Search cookies https://www.shodan.io/ Shodan Search engine for Internet-connected devices https://censys.io/ Censys Search engine for Internet-connected devices https://www.robtex.com/ Robtex Research of IP numbers, Domain names, etc https://otx.</description>
+    </item>
+    
+    <item>
+      <title>Crash JSON in golnag</title>
+      <link>https://famasoon.github.io/posts/crashjsongolang/</link>
+      <pubDate>Thu, 12 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/crashjsongolang/</guid>
+      <description>内容 下記のコードを見てほしい。
+package main import ( &amp;#34;encoding/json&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { var JSONDATA = []byte(`{\&amp;#34;\&amp;#34;:&amp;#39;AAAA&amp;#39;}`) fmt.Printf(&amp;#34;%v\n&amp;#34;, JSONDATA) var raw map[string]interface{} err := json.Unmarshal(JSONDATA, &amp;amp;raw) if err != nil { panic(err) } fmt.Printf(&amp;#34;%v\n&amp;#34;, raw) } JSONをインターフェースにアンマーシャルしている。 これで構造体の中身が可変でもまぁ何とかUnmarshalできる。 では実行してみよう。
+$ go run main.go panic: invalid character &amp;#39;\\&amp;#39; looking for beginning of object key string goroutine 1 [running]: main.main() /Users/doejohn/work/projects/fuzz_go/fire/json/case2/main.go:13 +0x13c exit status 2 うーむ、エラー内容をみるに本来\&amp;quot;\&amp;quot;として認識する所を\\として認識してエラーが発生しているよう&amp;hellip;?
+ちょっと手を加えてきちんと&amp;quot;とかを認識しているか確認。
+package main import ( &amp;#34;encoding/json&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { var JSONDATA = []byte(`{\&amp;#34;\&amp;#34;:&amp;#39;AAAA&amp;#39;}`) fmt.</description>
+    </item>
+    
+    <item>
+      <title>gif画像をFuzzingして確認したクラッシュケース</title>
+      <link>https://famasoon.github.io/posts/fuzzgifongolang/</link>
+      <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/fuzzgifongolang/</guid>
+      <description>gif画像をFuzzingして確認したクラッシュケース 下記のコードを見てほしい。
+package main import ( &amp;#34;bytes&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;image/gif&amp;#34; &amp;#34;reflect&amp;#34; ) func main() { img, err := gif.DecodeAll(bytes.NewReader([]byte(&amp;#34;GIF89a0\x0000000!\xf9\x04\xf9000\x00,0\x000\x00\x00\x000\x00\x80000000\x02\x00;&amp;#34;))) if err != nil { panic(err) } w := new(bytes.Buffer) err = gif.EncodeAll(w, img) if err != nil { panic(err) } img1, err := gif.DecodeAll(w) if err != nil { panic(err) } img1.Disposal = img.Disposal if !reflect.DeepEqual(img, img1) { fmt.Printf(&amp;#34;gif0: %#v\n&amp;#34;, img) fmt.Printf(&amp;#34;gif1: %#v\n&amp;#34;, img1) panic(&amp;#34;gif changed&amp;#34;) } } gif画像をEncodeしてDecodeしてreflect.DeepEqualで内容が一致しているか確認しているコードだ。 一見すると内容は一致してそうだし、特にpanic等に入らずそのまま終了しそうなコードだ。 では結果を見てみよう。</description>
+    </item>
+    
+    <item>
+      <title>証明書の発行されたTor Hidden Serviceを探してみた</title>
+      <link>https://famasoon.github.io/posts/findtorhidden/</link>
+      <pubDate>Tue, 03 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/findtorhidden/</guid>
+      <description>Tor Hidden Serviceとは Tor Hidden Service(以下 &amp;ldquo;HS&amp;rdquo;)とは強固な匿名性を確保するツールTorを用いないとアクセスできないサービスのこと。 末尾が.onionで終わるドメイン名を持つ。 Tor は端末のIPアドレスを隠すことでサービス提供者の匿名性を向上させるツール。 SOCKSプロキシとして動作するため、SOCKSプロトコルのプロキシが対応していればHS自体は別にHTTPサーバでもメールでもSSHでも使える。
+例: 自宅のラズパイを Tor Onion Service にして外から SSH 接続する
+Tor Hidden Service と証明書 さて、HSはTor Bundle Browser を用いれば簡単にアクセスが可能だ。 有名なHSはFacebookやThe New York Timesが挙げられる。 ここで気になるのが、これらHSがHTTPSを使っていることだ。
+https://facebookcorewwwi.onion https://www.nytimes3xbfgragh.onion
+Facebook, hidden services, and https certs
+上記リンクを参照してもらうとわかる通りHSでも証明書は使える(色々と議論が盛り上がったようだが&amp;hellip;)
+「どうせE2Eで暗号化されているし、PGPなり何なりの署名で検証できるしHTTPSの証明書いるか？」と思う部分もあるものの、表立って活動している企業や団体がHSでサッとなりすましではないことをを示すのには便利なのだろう。
+そんな事情もあって一部HSでHTTPSが使われているが、このHTTPS通信で使用する証明書も例外なくCertificate Transparency(以下&amp;quot;CT&amp;quot;)のログを残している。
+ここでこんな考えが出てくる。
+「もしかしてCTログを漁ればHTTPSのHSと紐づいている他のHSやサーバの情報を確認できるのでは？」
+「✝️闇✝️のサービスのCTログとか発見して、それを元に色々と情報を確認できるのでは？」
+と言うわけで早速crt.shで.onionドメインと紐づいている証明書を探してみた。
+crt.sh でクエリかけてみた とりあえず%.onionでクエリをかけてみた。
+https://crt.sh/?q=%25.onion
+めっちゃヒットするじゃん&amp;hellip;
+自作したcrt.shでクエリかけるツールでドメインを洗い出してみた.
+自作したツール: crtsh
+$ ./crtsh -q %.onion -o | sort | uniq 結果はこちら gist
+パッと見た感じ普通の企業やら団体ばかりという感じ。 前述した通り「どうせE2Eで暗号化されているし、PGPなり何なりの署名で検証できるしHTTPSの証明書いるか？」と思っている人が存在している中で、企業でも何でもない人が証明書を取得するメリットがない。 証明書発行にはコストがかかるし、認証局に色々と情報を渡さないといけない。 そして何よりHSで大きいトラフィックを抱えているような✝️闇✝️のサービスなんかはそもそも証明書が発行されないだろう(推測)</description>
+    </item>
+    
+    <item>
+      <title>GitHub Actionでマルチプラットフォームなテストをした</title>
+      <link>https://famasoon.github.io/posts/githubactions/</link>
+      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/githubactions/</guid>
+      <description>概要 【GitHub Actions】Go言語の自動テストからリリースまでを作ってみた と GitHub Actions for Go を参考にLinux, Mac, WindowsでGo言語製ツールをテストした。 あとGitHub Actionsのワークフロー構文も参考にした。
+成果物は下記リンクを参照。
+https://github.com/famasoon/crtsh/blob/master/.github/workflows/go_test.yml
+内容は.github/workflows/go_test.ymlの中。
+name: Run tests on multi environment on: [push, pull_request] jobs: test: strategy: matrix: go-version: [1.12.x, 1.13.x] platform: [ubuntu-latest, macos-latest, windows-latest] runs-on: ${{ matrix.platform }} steps: - name: Install Go uses: actions/setup-go@v1 with: go-version: ${{ matrix.go-version }} - name: Checkout code uses: actions/checkout@v1 - name: Get dependcies run: go get -v -t -d ./... - name: Test run: go test .</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox Walkthrough - Optim</title>
+      <link>https://famasoon.github.io/posts/optim/</link>
+      <pubDate>Mon, 04 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/optim/</guid>
+      <description>About Optim Optim
+Nmap Port scan result
+# nmap -sV -sT -sC --script=vuln -oA nmap_result.txt 10.10.10.8 Starting Nmap 7.80 ( https://nmap.org ) at 2019-11-03 09:55 EST Stats: 0:06:29 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan NSE Timing: About 99.32% done; ETC: 10:01 (0:00:02 remaining) Stats: 0:14:57 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan NSE Timing: About 99.32% done; ETC: 10:10 (0:00:06 remaining) Nmap scan report for 10.</description>
+    </item>
+    
+    <item>
+      <title>About NSE scripts</title>
+      <link>https://famasoon.github.io/posts/nse/</link>
+      <pubDate>Fri, 01 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/nse/</guid>
+      <description>What is NSE Network Script Engine(NSE) can be able to write for automation network scan.
+About NSE NSE is written by Lua. In Linux, Script locate /usr/local/share/nmap/scripts, and library locate /usr/local/share/nmap/nselib.
+How to enable NSE Add -sC option run default category NSE option.
+--script option run the specified directory or script is executed by NSE.
+Tutorial Run nmap with NSE
+$ nmap -sC example.com Result
+# nmap -sC example.com Starting Nmap 7.</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox Walkthrough - Legacy</title>
+      <link>https://famasoon.github.io/posts/legacy/</link>
+      <pubDate>Tue, 29 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/legacy/</guid>
+      <description>This post is writeup of the HackTheBox machine created by ch4p.
+Nmsp Nmap result
+# nmap -sV -sC --script=vuln 10.10.10.4 Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-28 12:27 EDT Nmap scan report for 10.10.10.4 Host is up (0.32s latency). Not shown: 997 filtered ports PORT STATE SERVICE VERSION 139/tcp open netbios-ssn Microsoft Windows netbios-ssn |_clamav-exec: ERROR: Script execution failed (use -d to debug) 445/tcp open microsoft-ds Microsoft Windows XP microsoft-ds |_clamav-exec: ERROR: Script execution failed (use -d to debug) 3389/tcp closed ms-wbt-server Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp Host script results: |_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED | smb-vuln-ms08-067: | VULNERABLE: | Microsoft Windows system vulnerable to remote code execution (MS08-067) | State: VULNERABLE | IDs: CVE:CVE-2008-4250 | The Server service in Microsoft Windows 2000 SP4, XP SP2 and SP3, Server 2003 SP1 and SP2, | Vista Gold and SP1, Server 2008, and 7 Pre-Beta allows remote attackers to execute arbitrary | code via a crafted RPC request that triggers the overflow during path canonicalization.</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox Walkthrough - lame</title>
+      <link>https://famasoon.github.io/posts/lame/</link>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/lame/</guid>
+      <description>This post is writeup of the HackTheBox machine created by ch4p.
+Nmap Nmap result
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-27 10:46 EDT Nmap scan report for 10.10.10.3 Host is up (0.29s latency). Not shown: 996 filtered ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 2.3.4 |_ftp-anon: Anonymous FTP login allowed (FTP code 230) | ftp-syst: | STAT: | FTP server status: | Connected to 10.10.14.15 | Logged in as ftp | TYPE: ASCII | No session bandwidth limit | Session timeout in seconds is 300 | Control connection is plain text | Data connections will be plain text | vsFTPd 2.</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox Walkthrough - Devel</title>
+      <link>https://famasoon.github.io/posts/devel/</link>
+      <pubDate>Wed, 16 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/devel/</guid>
+      <description>This post is writeup of the HackTheBox machine created by ch4p.
+Nmap Quick port scan reveals FTP service and web server.
+# nmap -sC -sV 10.10.10.5 Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-15 21:00 EDT Nmap scan report for 10.10.10.5 Host is up (0.28s latency). Not shown: 998 filtered ports PORT STATE SERVICE VERSION 21/tcp open ftp Microsoft ftpd | ftp-anon: Anonymous FTP login allowed (FTP code 230) | 03-18-17 02:06AM &amp;lt;DIR&amp;gt; aspnet_client | 03-17-17 05:37PM 689 iisstart.</description>
+    </item>
+    
+    <item>
+      <title>10進数表記のIPアドレスでwebサイトにアクセスする</title>
+      <link>https://famasoon.github.io/posts/decimalip/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/decimalip/</guid>
+      <description>はじめに なんとなくGitHubを漁っていたら面白そうなリポジトリを見つけた。
+https://github.com/OsandaMalith/IPObfuscator 内容はIPアドレスを10進数や16進数、8進数に変換してwebサイトにアクセスするというもの。 バラバラの基数でも最終的にIPアドレスっぽくなればアクセスできるみたい。 そういえば10進数のIPアドレス表記を利用する攻撃活動もありましたね。 悪用ダメ絶対。
+実装を見てみる https://github.com/OsandaMalith/IPObfuscator/blob/master/ip.c なるほど。 1バイトずつ読んで基数変換しているみたい。
+実装してみた なんとなくGo言語で実装してみた
+https://github.com/famasoon/go-IPObfuscator
+すごく可読性の低いコードになってしまったので後々、修正する。 正直あまり実用性はない。 出力方法も書いておく。
+$ git clone https://github.com/famasoon/go-IPObfuscator $ cd go-IPObfuscator $ go run main.go Enter IP Address: 222.165.163.91 http://3735397211 http://0xde.0xa5.0xa3.0x5b http://0336.0245.0243.0133 http://0x00000000de.0x00000000a5.0x00000000a3.0x000000005b http://00000000336.00000000245.00000000243.00000000133 http://0xde.0xa5.0xa3.91 http://0xde.0xa5.163.91 http://0xde.165.163.91 http://0336.0245.0243.91 http://0336.0245.163.91 http://0336.165.163.91 http://0xde.0xa5.41819 http://0336.0245.41819 http://0xde.0245.41819 http://0xde.10855259 http://0336.10855259 http://0xde.0xa5.0243.0133 http://0xde.0245.0243.0133 出力されたリンクを踏むとGoogle に飛ぶ。 結構、見た目を変えてもアクセスできるので奥が深い。 おわり</description>
+    </item>
+    
+    <item>
+      <title>Container Registry に自分の作ったDockerイメージをpushする</title>
+      <link>https://famasoon.github.io/posts/containerregistory/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/containerregistory/</guid>
+      <description>https://cloud.google.com/container-registry/docs/pushing-and-pulling?hl=ja プライベートなDockerコンテナレジストリが欲しかったので使ってみた。
+gcloudコマンドのセットアップを終える gcloud auth configure-dockerでDocker Registryの認証をする 下記コマンドでビルド済みのイメージ名にタグ付けをする $ docker tag [任意のイメージ名] gcr.io/[プロジェクトID]/[イメージ名]:[バージョン] 下記コマンドでContainer RegistryにDocker イメージを push $ docker push gcr.io/[プロジェクト名]/[イメージ名]:[バージョン] これで作ったDockerイメージのContainer Registryへpush完了</description>
+    </item>
+    
+    <item>
+      <title>Create Binary Analysis VM</title>
+      <link>https://famasoon.github.io/posts/createbinaryanalysisvm/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/createbinaryanalysisvm/</guid>
+      <description>Create Binary Analysis VM I created VM for reverse engineering. This is the note at that time.
+Install Virtual Box To run VMs needs hypervisor. I choose the Virtual Box. Because, Virtual Box is easy to use and free. To install Virtual Box navigate to the this page. https://www.virtualbox.org/wiki/Downloads You choose the package for your system, and download it. Run the installer. If you are using the mac OS, you can install with this command too.</description>
+    </item>
+    
+    <item>
+      <title>Create Binary Analysis VM</title>
+      <link>https://famasoon.github.io/posts/makecrtshwapper/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/makecrtshwapper/</guid>
+      <description>Create Binary Analysis VM I created VM for reverse engineering. This is the note at that time.
+Install Virtual Box To run VMs needs hypervisor. I choose the Virtual Box. Because, Virtual Box is easy to use and free. To install Virtual Box navigate to the this page. https://www.virtualbox.org/wiki/Downloads You choose the package for your system, and download it. Run the installer. If you are using the mac OS, you can install with this command too.</description>
+    </item>
+    
+    <item>
+      <title>Create Binary Analysis VM</title>
+      <link>https://famasoon.github.io/posts/makegolangapiserver/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/makegolangapiserver/</guid>
+      <description>Create Binary Analysis VM I created VM for reverse engineering. This is the note at that time.
+Install Virtual Box To run VMs needs hypervisor. I choose the Virtual Box. Because, Virtual Box is easy to use and free. To install Virtual Box navigate to the this page. https://www.virtualbox.org/wiki/Downloads You choose the package for your system, and download it. Run the installer. If you are using the mac OS, you can install with this command too.</description>
+    </item>
+    
+    <item>
+      <title>Finding IRP dispatch routine</title>
+      <link>https://famasoon.github.io/posts/findingirpdispatch/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/findingirpdispatch/</guid>
+      <description>Environment Windows 10 In VM Attached Windbg How to finding First, show deviceobject structures
+kd&amp;gt; !drvobj DeviceObj 7 Driver object (ffffa3828a49b060) is for: \Driver\DeviceObj Driver Extension List: (id , addr) Device Object list: ffffa3828c2869f0 DriverEntry: fffff80043a55064 DeviceObj DriverStartIo: 00000000 DriverUnload: fffff800439d1950 DeviceObj AddDevice: 00000000 Dispatch routines: [00] IRP_MJ_CREATE fffff800439d4ff0 DeviceObj+0x4ff0 [01] IRP_MJ_CREATE_NAMED_PIPE fffff800439d4ff0 DeviceObj+0x4ff0 [02] IRP_MJ_CLOSE fffff800439d4ff0 DeviceObj+0x4ff0 [03] IRP_MJ_READ fffff800439d4ff0 DeviceObj+0x4ff0 [04] IRP_MJ_WRITE fffff800439d4ff0 DeviceObj+0x4ff0 [05] IRP_MJ_QUERY_INFORMATION fffff800439d4ff0 DeviceObj+0x4ff0 [06] IRP_MJ_SET_INFORMATION fffff800439d4ff0 DeviceObj+0x4ff0 [07] IRP_MJ_QUERY_EA fffff800439d4ff0 DeviceObj+0x4ff0 [08] IRP_MJ_SET_EA fffff800439d4ff0 DeviceObj+0x4ff0 [09] IRP_MJ_FLUSH_BUFFERS fffff800439d4ff0 DeviceObj+0x4ff0 [0a] IRP_MJ_QUERY_VOLUME_INFORMATION fffff800439d4ff0 DeviceObj+0x4ff0 [0b] IRP_MJ_SET_VOLUME_INFORMATION fffff800439d4ff0 DeviceObj+0x4ff0 [0c] IRP_MJ_DIRECTORY_CONTROL fffff800439d4ff0 DeviceObj+0x4ff0 [0d] IRP_MJ_FILE_SYSTEM_CONTROL fffff800439d4ff0 DeviceObj+0x4ff0 [0e] IRP_MJ_DEVICE_CONTROL fffff800439d5020 DeviceObj+0x5020 [0f] IRP_MJ_INTERNAL_DEVICE_CONTROL fffff800439d4ff0 DeviceObj+0x4ff0 [10] IRP_MJ_SHUTDOWN fffff800439d4ff0 DeviceObj+0x4ff0 [11] IRP_MJ_LOCK_CONTROL fffff800439d4ff0 DeviceObj+0x4ff0 [12] IRP_MJ_CLEANUP fffff800439d4ff0 DeviceObj+0x4ff0 [13] IRP_MJ_CREATE_MAILSLOT fffff800439d4ff0 DeviceObj+0x4ff0 [14] IRP_MJ_QUERY_SECURITY fffff800439d4ff0 DeviceObj+0x4ff0 [15] IRP_MJ_SET_SECURITY fffff800439d4ff0 DeviceObj+0x4ff0 [16] IRP_MJ_POWER fffff800439d4ff0 DeviceObj+0x4ff0 [17] IRP_MJ_SYSTEM_CONTROL fffff800439d4ff0 DeviceObj+0x4ff0 [18] IRP_MJ_DEVICE_CHANGE fffff800439d4ff0 DeviceObj+0x4ff0 [19] IRP_MJ_QUERY_QUOTA fffff800439d4ff0 DeviceObj+0x4ff0 [1a] IRP_MJ_SET_QUOTA fffff800439d4ff0 DeviceObj+0x4ff0 [1b] IRP_MJ_PNP fffff800463238f0 nt!</description>
+    </item>
+    
+    <item>
+      <title>Golang &#43; Nuxt.js &#43; Kubernetes でWebサービスを作る</title>
+      <link>https://famasoon.github.io/posts/golangnuxtk8s/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/golangnuxtk8s/</guid>
+      <description>Golang でAPIサーバを作る Golang + Nuxt.js + Kubernetes でWebサービスを作るシリーズ第一弾。 まずはGolangでシンプルなAPIサーバを作成してみる。
+今回はGETリクエストで渡されたドメインのwhois情報を取得するAPIサーバを書く。
+APIサーバのソースコードはGitHubにアップロード済み https://github.com/famasoon/webapp-api
+まずは適当なディレクトリを作る。
+mkdir webapp-api cd webapp-api 次にGoの依存関係を初期化。
+GO111MODULE=on go mod init 今回はGo言語のEchoというモジュールでHTTPリクエストを、gowhoisでwhois関連の処理を行う。 必要なモジュールをgo getで取得。
+go get github.com/labstack/echo/... go get -u github.com/famasoon/gowhois 下記のmain.goでAPIサーバを書く。
+package main import ( &amp;#34;net/http&amp;#34; &amp;#34;github.com/famasoon/gowhois/whois&amp;#34; &amp;#34;github.com/labstack/echo&amp;#34; ) type whoisInfo struct { Domain string `json:&amp;#34;domain&amp;#34;` WhoisResult string `json:&amp;#34;result&amp;#34;` } func main() { e := echo.New() e.GET(&amp;#34;/&amp;#34;, func(c echo.Context) error { return c.String(http.StatusOK, &amp;#34;OK&amp;#34;) }) e.GET(&amp;#34;/api/v1/whois/:domain&amp;#34;, getWhoisResult) e.Logger.Fatal(e.Start(&amp;#34;:8080&amp;#34;)) } func getWhoisResult(c echo.</description>
+    </item>
+    
+    <item>
+      <title>Ingressのヘルスチェックに対応する</title>
+      <link>https://famasoon.github.io/posts/ingress/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/ingress/</guid>
+      <description>tl;dr &amp;ldquo;/&amp;ldquo;パスへのHTTPリクエストに対し200ステータスを返すように実装すればよい Ingress のヘルスチェック GKEでIngressを使っていた所ヘルスチェックをうまく通過しない。 色々と調べたところIngressのヘルスチェックはreadinessProbe.httpGetを指定しないと、デフォルトでは&amp;rdquo;/&amp;ldquo;パスにHTTP GETリクエストを送信し200ステータスが帰ってこない場合は対象ポッドが動作していないとみなすみたい。 https://github.com/kubernetes/ingress-gce/issues/42
+readinessProbe.httpGetを指定しても別に良かったが、&amp;rdquo;/&amp;ldquo;パスは使っていないし、どうせヘルスチェック用にyamlを書き足しAPIのエンドポイントを作るのだったら、&amp;rdquo;/&amp;ldquo;へのリクエストに200返すようなコードを書いておけばいいだろうと思い、下記のGolangコードをエンドポイントに追加して対応した。
+package main import ( &amp;#34;net/http&amp;#34; &amp;#34;github.com/labstack/echo&amp;#34; &amp;#34;github.com/labstack/echo/middleware&amp;#34; ) func main() { e := echo.New() e.Use(middleware.Logger()) e.Use(middleware.Recover()) e.GET(&amp;#34;/&amp;#34;, func(c echo.Context) error { return c.String(http.StatusOK, &amp;#34;OK&amp;#34;) }) e.Logger.Fatal(e.Start(&amp;#34;:8080&amp;#34;)) } 参考 Ingressというよりk8sの話だが、ヘルスチェックについては下記ドキュメントが参考になった
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ </description>
+    </item>
+    
+    <item>
+      <title>LeetCode TwoSum をテストしながら解く</title>
+      <link>https://famasoon.github.io/posts/leetcodetwosum/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/leetcodetwosum/</guid>
+      <description>LeetCodeという競技プログラミングサービスがある。 まだ始めたばかりなのだがとっつきやすい作りになっていて良い。 そんなLeetCodeの問題 TwoSum を解いてみた。 ただ解いてみたというのも面白くないので今回はテストコードも書きながら解答してみる。
+TwoSum 問題はへのリンク https://leetcode.com/problems/two-sum/。 問いは下記の通り。
+数値の入った配列と整数値targetが与えられるので、配列の中から足すとtargetになる値の組み合わせを見つけ、その要素がどこにあるかを答えよ。 必ず答えは存在するものとする。 また別々の位置の値を必ず使用する事
+以下に例を書く
+Given nums = [2, 7, 11, 15], target = 9,
+Because nums[0] + nums[1] = 2 + 7 = 9, return [0, 1].
+テストコードを書く コードを弄ってブラウザ上でテストしても問題はないが遅い。 なので今回は手元ですぐに動作するテストコードを書いた。
+package twosum import ( &amp;#34;reflect&amp;#34; &amp;#34;testing&amp;#34; ) type testCase struct { array []int target int } func TestTwoSum(t *testing.T) { tests := []struct { input testCase output []int }{ {testCase{[]int{2, 7, 11, 15}, 9}, []int{0, 1}}, {testCase{[]int{2, 3, 4, 11, 15}, 6}, []int{0, 2}}, } for i, tt := range tests { sum := twoSum(tt.</description>
+    </item>
+    
+    <item>
+      <title>List up populer Tor hidden service with Tor2Web</title>
+      <link>https://famasoon.github.io/posts/listuptor/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/listuptor/</guid>
+      <description>TL;DR: Access to https://tor2web.tld/antanistaticmap/stats/yesterday, you can collect Tor Hidden services URLs that has tor2web users accessed.
+There is a thing called Tor Hidden Service that can publish service anonymously.
+I have written an article in Japanese about how to publish Tor Hidden Service.
+The Tor Hidden Service can not be accessed from a clear network, but can easily be accessed using a proxy called Tor2Web. Tor2Web
+The famous Tor2web example:</description>
+    </item>
+    
+    <item>
+      <title>Practical Binary Analysisの演習用環境をDockerで作った</title>
+      <link>https://famasoon.github.io/posts/binaryanalysis/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/binaryanalysis/</guid>
+      <description>三行で Practical Binary Analysis はリバースエンジニアリング入門にはうってつけの本 基本的な演習環境はVMで配布されている Dockerで環境を作るときはバージョンを指定しよう 概要 Practical Binary Analysisはモダンなバイナリ解析について学ぶことができる本。 目次は下記の通り。
+Chapter 1: Anatomy of a Binary Chapter 2: The ELF Format Chapter 3: The PE Format: A Brief Introduction Chapter 4: Building a Binary Loader Using libbfd Part II: Binary Analysis Fundamentals Chapter 5: Basic Binary Analysis In Linux Chapter 6: Disassembly and Binary Analysis Fundamentals Chapter 7: Simple Code Injection Techniques for ELF Part III: Advanced Binary Analysis Chapter 8: Customizing Disassembly Chapter 9: Binary Instrumentation Chapter 10: Principles of Dynamic Taint Analysis Chapter 11: Practical Dynamic Taint Analysis with libdft Chapter 12: Principles of Symbolic Execution Chapter 13: Practical Symbolic Execution with Triton Part IV: Appendices Appendix A: A Crash Course on x86 Assembly Appendix B: Implementing PT_NOTE Overwriting Using libelf Appendix C: List of Binary Analysis Tools Appendix D: Further Reading 基礎的なディスアセンブラを実装したり、テイント解析やシンボリック実行をやったりと、今からリバースエンジニアリングをするなら抑えておきたい点を実装して手を動かしながら体系的に学ぶことができる。</description>
+    </item>
+    
+    <item>
+      <title>pwnable.tw hacknote writeup</title>
+      <link>https://famasoon.github.io/posts/hacknote/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/hacknote/</guid>
+      <description>A good Hacker should always take good notes! nc chall.pwnable.tw 10102
+Environment $ uname -a Linux base-debootstrap 4.4.0-159-generic #187-Ubuntu SMP Thu Aug 1 16:28:06 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux Check binary security
+pwndbg&amp;gt; checksec [*] &amp;#39;/home/vagrant/work/pwnabletw/hacknote/hacknote&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: Canary found NX: NX enabled PIE: No PIE (0x8048000) Findings First, I decompiled some functions using Ghidra.
+Main routine. AddNote function malloc is called in units of 8 bytes(This chunk is managed by fastbins) DeleteNote Calls the free() but does not store null pointer(Maybe can use Use After Free) PrintNote Execute the value received from the heap as a function.</description>
+    </item>
+    
+    <item>
+      <title>pwnable.tw orw Writeup</title>
+      <link>https://famasoon.github.io/posts/orw/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/orw/</guid>
+      <description>Read the flag from /home/orw/flag. Only open read write syscall are allowed to use.
+Environment $ uname -a Linux base-debootstrap 4.4.0-159-generic #187-Ubuntu SMP Thu Aug 1 16:28:06 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux Findings This file is 32bit ELF file.
+$ file ./orw ./orw: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 2.6.32, BuildID[sha1]=e60ecccd9d01c8217387e8b77e9261a1f36b5030, not stripped Disassemble result.
+This file read shellcode and execute it, but since seccomp is used, system calls other than open, read, and write cannot be used.</description>
+    </item>
+    
+    <item>
+      <title>pwnable.tw start writeup</title>
+      <link>https://famasoon.github.io/posts/start/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/start/</guid>
+      <description>environment $ uname -a Linux base-debootstrap 4.4.0-159-generic #187-Ubuntu SMP Thu Aug 1 16:28:06 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux $ gdb --version GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1 Copyright (C) 2016 Free Software Foundation, Inc. License GPLv3+: GNU GPL version 3 or later &amp;lt;http://gnu.org/licenses/gpl.html&amp;gt; This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law. Type &amp;#34;show copying&amp;#34; and &amp;#34;show warranty&amp;#34; for details.</description>
+    </item>
+    
+    <item>
+      <title>Tor Hidden Service でウェブサイトを公開してみる</title>
+      <link>https://famasoon.github.io/posts/maketorhidden/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/maketorhidden/</guid>
+      <description>まえがき ダークウェブについて という記事を読んだ。 内容はダークウェブ、主にTor Hidden Service(以下 &amp;ldquo;HS&amp;rdquo;)に的を絞って解説しているものだ。 HSについては先の記事でも書かれているようにTor Bundle Browserを用いれば簡単にアクセスが可能。 有名なHSはFacebookやThe New York Timesが挙げられる。 さて、そんなHSだがアクセスするだけでなくサイトの開設も簡単だったりする。 自分でサーバをたててサイトを開いたことがあれば誰でもできるような内容だ。 早速やってみるとしよう。
+環境 $ uname -a Linux instance-2 4.10.0-40-generic #44~16.04.1-Ubuntu SMP Thu Nov 9 15:37:44 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux $ lsb_release -a No LSB modules are available. Distributor ID: Ubuntu Description: Ubuntu 16.04.3 LTS Release: 16.04 Codename: xenial Tor のセッティング 何はともあれ Tor をインストールしなければ始まらない。 Ubuntu 16.04 では apt で簡単にインストールできる。
+$ sudo apt install tor $ sudo systemctl start tor Tor 公式ドキュメントである https://www.</description>
+    </item>
+    
+    <item>
+      <title>windbgとVirtualBox を用いた Windows カーネルデバッグ</title>
+      <link>https://famasoon.github.io/posts/winkerneldebug/</link>
+      <pubDate>Sat, 12 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/winkerneldebug/</guid>
+      <description>シリアルポート経由でカーネルデバッグした時に実施した手順です。
+VM側のWindowsで実施する手順 Windows上で管理者権限でPowershellを起動 下記コマンドを入力 bcdedit /debug on bcdedit /dbgsettings serial debugport:1 baudrate:115200 Windowsをシャットダウン ホスト側のWinodwsで実施する手順 VirtualBoxでVMの設定を開き下記の画像のように設定 &amp;ldquo;シリアルポートを有効化&amp;quot;にチェックを入れる &amp;ldquo;ポートモード&amp;quot;を&amp;quot;ホストにパイプ&amp;quot;にする &amp;ldquo;パス/アドレス&amp;quot;を&amp;rdquo;\.\pipe\com1&amp;quot;にする VMを起動する ストア からWinDbg Previewをインストールする(なぜか自分の環境ではWDKのWinDbgだとカーネルでバッグをしようにも&amp;quot;debuggee not connected&amp;quot;と表示され使えなかったためWinDbg Previewを使う) WinDbg Preview を開いたら&amp;quot;ファイル&amp;quot;タブから&amp;quot;Attach to kernel&amp;quot;を選択し下記設定をする &amp;ldquo;Pipe&amp;quot;にチェックを入れる &amp;ldquo;Reconnect&amp;quot;にチェックを入れる &amp;ldquo;Port&amp;quot;を&amp;rdquo;\.\pipe\com1&amp;quot;にする VMを起動 これでカーネルでバッグが実施可能になる。</description>
+    </item>
+    
+  </channel>
+</rss>
