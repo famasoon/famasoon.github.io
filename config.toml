@@ -1,3 +1,107 @@
 baseURL = 'https://x64.moe/'
 languageCode = 'ja-JP'
 title = 'x64.moe'
+theme = "PaperMod"
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+googleAnalytics = "UA-107195112-2"
+pygmentsUseClasses = true
+
+[minify]
+disableXML = true
+minifyOutput = true
+
+[params]
+env = "production"
+title = "x64.moe"
+description = "FAMASoon's blog"
+keywords = [ "Blog", "Portfolio" ]
+author = "FAMASoon"
+images = [ "static/famasoon.jpg" ]
+DateFormat = "January 2, 2006"
+defaultTheme = "auto"
+disableThemeToggle = false
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = false
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+disableSpecial1stPost = false
+disableScrollToTop = false
+comments = false
+hidemeta = false
+hideSummary = false
+showtoc = false
+tocopen = false
+
+  [params.label]
+  text = "Home"
+
+  [params.profileMode]
+  enabled = false
+  title = "x64.moe"
+  subtitle = "x64.moe is FAMASoon's blog"
+  imageUrl = "static/famasoon.jpg"
+  imageWidth = 120
+  imageHeight = 120
+  imageTitle = "my image"
+
+    [[params.profileMode.buttons]]
+    name = "Posts"
+    url = "posts"
+
+    [[params.profileMode.buttons]]
+    name = "Tags"
+    url = "tags"
+
+  [params.homeInfoParams]
+  Title = "x64.moe 👋"
+  Content = "Welcome to FAMASoon's blog"
+
+  [[params.socialIcons]]
+  name = "twitter"
+  url = "https://twitter.com/FAMASoon"
+
+  [[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/famasoon"
+
+  [params.cover]
+  hidden = true
+  hiddenInList = true
+  hiddenInSingle = true
+
+  [params.editPost]
+  URL = "https://github.com/<path_to_repo>/content"
+  Text = "Suggest Changes"
+  appendFilePath = true
+
+  [params.fuseOpts]
+  isCaseSensitive = false
+  shouldSort = true
+  location = 0
+  distance = 1_000
+  threshold = 0.4
+  minMatchCharLength = 0
+  keys = [ "title", "permalink", "summary", "content" ]
+
+[[menu.main]]
+identifier = "categories"
+name = "categories"
+url = "/categories/"
+weight = 10
+
+[[menu.main]]
+identifier = "tags"
+name = "tags"
+url = "/tags/"
+weight = 20
+
+[markup.highlight]
+noClasses = false
