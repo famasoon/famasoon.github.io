@@ -1,7 +1,8 @@
-baseURL = 'https://x64.moe/'
+baseURL = 'https://famasoon.github.io/'
 languageCode = 'ja-JP'
 title = 'x64.moe'
 theme = "PaperMod"
+publishDir = "docs"
 
 enableRobotsTXT = true
 buildDrafts = false
