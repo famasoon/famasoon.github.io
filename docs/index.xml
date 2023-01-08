@@ -1,16 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>x64.moe</title>
     <link>https://famasoon.github.io/</link>
     <description>Recent content on x64.moe</description>
-    <image>
-      <url>https://famasoon.github.io/static/famasoon.jpg</url>
-      <link>https://famasoon.github.io/static/famasoon.jpg</link>
-    </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 23 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 08 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackTheBox Nibbles Walkthrough</title>
+      <link>https://famasoon.github.io/posts/nibbles/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/nibbles/</guid>
+      <description>Nibbles IP address : 10.10.10.75
+Nmap result
+$ nmap -sV -sT -sC 10.10.10.75 Starting Nmap 7.93 ( https://nmap.org ) at 2022-12-17 05:59 EST Nmap scan report for 10.10.10.75 Host is up (0.11s latency). Not shown: 998 closed tcp ports (conn-refused) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 c4f8ade8f80477decf150d630a187e49 (RSA) | 256 228fb197bf0f1708fc7e2c8fe9773a48 (ECDSA) |_ 256 e6ac27a3b5a9f1123c34a55d5beb3de9 (ED25519) 80/tcp open http Apache httpd 2.</description>
+    </item>
+    
+    <item>
+      <title>nmap cheat sheet</title>
+      <link>https://famasoon.github.io/posts/nmapcheatsheet/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/nmapcheatsheet/</guid>
+      <description>Nmap cheat sheet $ nmap &amp;lt;scan types&amp;gt; &amp;lt;options&amp;gt; &amp;lt;target&amp;gt; -snDisables port scanning.
+-oA tnetStores the results in all formats starting with the name &amp;rsquo;tnet&#39;.
+-iLPerforms defined scans against targets in provided &amp;lsquo;hosts.lst&amp;rsquo; list.
+-PE Performs the ping scan by using &amp;lsquo;ICMP Echo requests&amp;rsquo; against the target. &amp;ndash;packet-trace Shows all packets sent and received --reasonDisplays the reason for specific result. --top-ports=10Scans the specified top ports that have been defined as most frequent.</description>
+    </item>
+    
+    <item>
+      <title>rpc enumeration</title>
+      <link>https://famasoon.github.io/posts/rpcenumeration/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/rpcenumeration/</guid>
+      <description>RPC Client RPC client
+$ rpcclient -U &amp;#34;&amp;#34; 10.129.14.128Enter WORKGROUP\&amp;#39;s password: rpcclient$&amp;gt; rpcclient$&amp;gt; srvinfo DEVSMB Wk Sv PrQ Unx NT SNT DEVSM platform_id : 500 os version : 6.1 server type : 0x809a03 rpcclient$&amp;gt; enumdomainsname:[DEVSMB] idx:[0x0] name:[Builtin] idx:[0x1] rpcclient$&amp;gt; querydominfoDomain: DEVOPS Server: DEVSMB Comment: DEVSM Total Users: 2 Total Groups: 0 Total Aliases: 0 Sequence No: 1632361158 Force Logoff: -1 Domain Server State: 0x1 Server Role: ROLE_DOMAIN_PDC Unknown 3: 0x1 rpcclient$&amp;gt; netshareenumallnetname: print$ remark: Printer Drivers path: C:\var\lib\samba\printers password: netname: home remark: INFREIGHT Samba path: C:\home\ password: netname: dev remark: DEVenv path: C:\home\sambauser\dev\ password: netname: notes remark: CheckIT path: C:\mnt\notes\ password: netname: IPC$ remark: IPC Service (DEVSM) path: C:\tmp password: rpcclient$&amp;gt; netsharegetinfo notesnetname: notes remark: CheckIT path: C:\mnt\notes\ password: type: 0x0 perms: 0 max_uses: -1 num_uses: 1 revision: 1 type: 0x8004: SEC_DESC_DACL_PRESENT SEC_DESC_SELF_RELATIVE DACL ACL Num ACEs: 1 revision: 2 --- ACE type: ACCESS ALLOWED (0) flags: 0x00 Specific bits: 0x1ff Permissions: 0x101f01ff: Generic all access SYNCHRONIZE_ACCESS WRITE_OWNER_ACCESS WRITE_DAC_ACCESS READ_CONTROL_ACCESS DELETE_ACCESS SID: S-1-1-0 rpcclient$&amp;gt; enumdomusersuser:[mrb3n] rid:[0x3e8] user:[cry0l1t3] rid:[0x3e9] rpcclient$&amp;gt; queryuser 0x3e9 User Name : cry0l1t3 Full Name : cry0l1t3 Home Drive : \\devsmb\cry0l1t3 Dir Drive : Profile Path: \\devsmb\cry0l1t3\profile Logon Script: Description : Workstations: Comment : Remote Dial : Logon Time : Do, 01 Jan 1970 01:00:00 CET Logoff Time : Mi, 06 Feb 2036 16:06:39 CET Kickoff Time : Mi, 06 Feb 2036 16:06:39 CET Password last set Time : Mi, 22 Sep 2021 17:50:56 CEST Password can change Time : Mi, 22 Sep 2021 17:50:56 CEST Password must change Time: Do, 14 Sep 30828 04:48:05 CEST unknown_2[0.</description>
+    </item>
+    
+    <item>
+      <title>Samba enumeration</title>
+      <link>https://famasoon.github.io/posts/sambaenum/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/sambaenum/</guid>
+      <description>Samba samba
+$ cat /etc/samba/smb.conf | grep -v &amp;#34;#\|\;&amp;#34;[global] workgroup = DEV.INFREIGHT.HTB server string = DEVSMB log file = /var/log/samba/log.%m max log size = 1000 logging = file panic action = /usr/share/samba/panic-action %d server role = standalone server obey pam restrictions = yes unix password sync = yes passwd program = /usr/bin/passwd %u passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* . pam password change = yes map to guest = bad user usershare allow guests = yes [printers] comment = All Printers browseable = no path = /var/spool/samba printable = yes guest ok = no read only = yes create mask = 0700 [print$] comment = Printer Drivers path = /var/lib/samba/printers browseable = yes read only = yes guest ok = no 設定 説明 [sharename] ネットワーク共有の名前。 workgroup = WORKGROUP/DOMAIN クライアントがクエリを実行したときに表示されるワークグループ。 path = /path/here/ ユーザーにアクセス権を付与するディレクトリ。 server string = STRING 接続が開始されたときに表示される文字列。 unix password sync = yes UNIX パスワードを SMB パスワードと同期しますか?</description>
+    </item>
+    
+    <item>
+      <title>SMTP enumeration</title>
+      <link>https://famasoon.github.io/posts/smtpenum/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/smtpenum/</guid>
+      <description>SMTP SMTP
+送信と通信は、SMTP サーバーにユーザーの要求を実行させる特別なコマンドによっても行われます。
+指示 説明 AUTH PLAIN AUTH は、クライアントの認証に使用されるサービス拡張です。 HELO クライアントはそのコンピューター名でログインし、セッションを開始します。 MAIL FROM クライアントは電子メールの送信者に名前を付けます。 RCPT TO クライアントは、電子メールの受信者に名前を付けます。 DATA クライアントが電子メールの送信を開始します。 RSET クライアントは開始された送信を中止しますが、クライアントとサーバー間の接続は維持します。 VRFY クライアントは、メールボックスがメッセージ転送に使用できるかどうかを確認します。 EXPN クライアントは、このコマンドでメールボックスがメッセージングに使用できるかどうかも確認します。 NOOP クライアントは、タイムアウトによる切断を防ぐために、サーバーに応答を要求します。 QUIT クライアントはセッションを終了します。 $ telnet 10.129.14.128 25 Trying 10.129.14.128... Connected to 10.129.14.128. Escape character is &amp;#39;^]&amp;#39;. 220 ESMTP Server HELO mail1.inlanefreight.htb 250 mail1.inlanefreight.htb EHLO mail1 250-mail1.inlanefreight.htb 250-PIPELINING 250-SIZE 10240000 250-ETRN 250-ENHANCEDSTATUSCODES 250-8BITMIME 250-DSN 250-SMTPUTF8 250 CHUNKING $ telnet 10.129.14.128 25 Trying 10.129.14.128... Connected to 10.</description>
+    </item>
+    
     <item>
       <title>[Note] How to build v8 for AFL</title>
       <link>https://famasoon.github.io/posts/afl/</link>
