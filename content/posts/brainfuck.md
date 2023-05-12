@@ -1,12 +1,12 @@
 ---
-title: "HackTheBox Walkthrough - Brainfuck"
+title: "HackTheBox Walkthrough - Brainf**k"
 date: "2023-05-10"
 draft: "false"
 ---
 
 This post is writeup of the HackTheBox machine.
 
-## Brainfuck
+## Brain**ck
 
 [https://app.hackthebox.com/machines/Brainfuck](https://app.hackthebox.com/machines/Brainfuck)
 

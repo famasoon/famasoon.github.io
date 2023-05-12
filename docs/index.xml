@@ -12,13 +12,13 @@
     <language>ja-JP</language>
     <lastBuildDate>Wed, 10 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>HackTheBox Walkthrough - Brainfuck</title>
+      <title>HackTheBox Walkthrough - Brainf**k</title>
       <link>https://famasoon.github.io/posts/brainfuck/</link>
       <pubDate>Wed, 10 May 2023 00:00:00 +0000</pubDate>
       
       <guid>https://famasoon.github.io/posts/brainfuck/</guid>
       <description>This post is writeup of the HackTheBox machine.
-Brainfuck https://app.hackthebox.com/machines/Brainfuck
+Brain**ck https://app.hackthebox.com/machines/Brainfuck
 Nmap Nmap result
 $ nmap -sC -sV 10.10.10.17 Starting Nmap 7.93 ( https://nmap.org ) at 2023-05-09 06:39 EDT Nmap scan report for 10.10.10.17 Host is up (0.072s latency). Not shown: 995 filtered tcp ports (no-response) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 94d0b334e9a537c5acb980df2a54a5f0 (RSA) | 256 6bd5dc153a667af419915d7385b24cb2 (ECDSA) |_ 256 23f5a333339d76d5f2ea6971e34e8e02 (ED25519) 25/tcp open smtp Postfix smtpd |_smtp-commands: brainfuck, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN 110/tcp open pop3 Dovecot pop3d |_pop3-capabilities: SASL(PLAIN) TOP RESP-CODES UIDL CAPA AUTH-RESP-CODE PIPELINING USER 143/tcp open imap Dovecot imapd |_imap-capabilities: LITERAL+ AUTH=PLAINA0001 capabilities LOGIN-REFERRALS have post-login listed SASL-IR IDLE ENABLE OK more IMAP4rev1 Pre-login ID 443/tcp open ssl/http nginx 1.</description>
     </item>
