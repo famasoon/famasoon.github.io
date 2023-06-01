@@ -10,7 +10,17 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sun, 28 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Connect to Ldap3 with Rust</title>
+      <link>https://famasoon.github.io/posts/implantpayload-copy/</link>
+      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/implantpayload-copy/</guid>
+      <description>What is Ldap LDAP stands for Lightweight Directory Access Protocol. It is an open and platform-independent protocol used for accessing and maintaining directory services over a network. Directory services store and organize information, such as user names, passwords, email addresses, and other attributes, in a hierarchical structure.
+LDAP is commonly used in client-server applications and network environments to facilitate centralized management of user authentication, authorization, and directory information. It allows clients to search, modify, and retrieve data from a directory server, which stores the directory information.</description>
+    </item>
+    
     <item>
       <title>Maldev - implant payload</title>
       <link>https://famasoon.github.io/posts/implantpayload/</link>
