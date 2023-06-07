@@ -1,6 +1,6 @@
 ---
 title: "Dll Injection with Rust"
-date: "2023-06-07"
+date: "2023-06-06"
 draft: "false"
 ---
 
