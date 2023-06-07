@@ -10,7 +10,18 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sun, 04 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dll Injection with Rust</title>
+      <link>https://famasoon.github.io/posts/dllinjectionwithrust/</link>
+      <pubDate>Wed, 07 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/dllinjectionwithrust/</guid>
+      <description>winapi winapi provides raw FFI bindings to all of Windows API. So, I will use this crate.
+code When run command cargo run, it can be inject dll to process
+use winapi::ctypes::*; use winapi::um::libloaderapi::{GetModuleHandleA, GetProcAddress}; use winapi::um::memoryapi::{VirtualAllocEx, WriteProcessMemory}; use winapi::um::processthreadsapi::{CreateRemoteThread, OpenProcess}; pub fn DllInject(proc_handle: *mut c_void, dll_path: &amp;amp;str) { unsafe { let remote_base = VirtualAllocEx( proc_handle, std::ptr::null_mut(), dll_path.len(), 0x1000, 0x40, ); WriteProcessMemory( proc_handle, remote_base, dll_path.as_bytes().as_ptr() as *const c_void, dll_path.len(), std::ptr::null_mut(), ); let dll_handle = GetModuleHandleA(&amp;#34;kernel32.</description>
+    </item>
+    
     <item>
       <title>Executing functions in Rust with winapi</title>
       <link>https://famasoon.github.io/posts/execfuncrustwithwinapi/</link>
