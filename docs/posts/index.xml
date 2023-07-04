@@ -10,7 +10,18 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 29 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LibFuzzerを使った</title>
+      <link>https://famasoon.github.io/posts/libfuzzerfail/</link>
+      <pubDate>Tue, 04 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/libfuzzerfail/</guid>
+      <description>LibFuzzerを使った https://x64.moe/posts/whatslibfuzzer/ こんな感じにファジングできるLibFuzzerを使ってみた。 結論としてはどれもうまくいかなかった(クラッシュしない・クラッシュしても配布されるビルドのものだとクラッシュしない等など)
+ターゲット Jansson https://github.com/akheron/jansson なんかのパーサがやりやすいかなと思ってJSONパーサのJanssonを選んだ。
+#include &amp;lt;stddef.h&amp;gt; #include &amp;lt;stdint.h&amp;gt; #include &amp;#34;jansson.h&amp;#34; int parseJson(const char *buffer, size_t buflen) { json_error_t error; json_t *root; json_t *obj; const char *str; double dValue; int iValue; root = json_loadb(buffer, buflen, 0, &amp;amp;error); if (root == NULL) { return 0; } obj = json_object_get(root, &amp;#34;dateTime&amp;#34;); if (json_is_string(obj)) { str = json_string_value(obj); } obj = json_object_get(root, &amp;#34;eventType&amp;#34;); if (json_is_string(obj)) { str = json_string_value(obj); } obj = json_object_get(root, &amp;#34;DependOnSequentialEvent&amp;#34;); if (json_is_object(obj)) { json_t *obj2; obj2 = json_object_get(obj, &amp;#34;valPercent&amp;#34;); if (json_is_real(obj2)) { dValue = json_real_value(obj2); } else if (json_is_integer(obj2)) { iValue = json_integer_value(obj2); } obj2 = json_object_get(obj, &amp;#34;alive&amp;#34;); if (json_is_string(obj2)) { str = json_string_value(obj2); } obj2 = json_object_get(obj, &amp;#34;isScript&amp;#34;); } return 0; } extern &amp;#34;C&amp;#34; int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) { if (size &amp;lt; 0) { return -1; } parseJson((const char *)data, size); return 0; } ビルド内容は下記のような感じ クラッシュしなかった。</description>
+    </item>
+    
     <item>
       <title>LibFuzzer&#39;s Example</title>
       <link>https://famasoon.github.io/posts/whatslibfuzzer/</link>
