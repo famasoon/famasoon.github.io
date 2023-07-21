@@ -10,7 +10,26 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 04 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PEについてメモ</title>
+      <link>https://famasoon.github.io/posts/whatispe/</link>
+      <pubDate>Fri, 21 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/whatispe/</guid>
+      <description>What is PE PEファイルとはPortable Executable File Formatの略。
+ポータブルな実行ファイルである。
+ビルド たとえばtest.cppといったファイルを作成してビルドすると、まず関連するヘッダーとソースをコンパイルし1つの機械語コードを作成する。
+この段階でReleaseディレクトリにobjファイルが生成される。
+次にリンク作業が行われる。
+リンカはOSでこのファイルを実行できるように動的ライブラリや様々なリソースデータ、インポート・エクスポートテーブルを処理するための情報をファイルに書き出す。
+この際にWindowsは決まったルールに沿って情報を用意しExeファイルを作成する際に、ヘッダーに情報を書き込む。
+これがPEフォーマットを作成する処理である。
+PEヘッダーの中には実行ファイルを実行するために様々な情報が記録されている。
+PEファイルの構造 IMAGE_DOS_HEADER IMAGE_NT_HEADER IMAGE_FILE_HEADER IMAGE_OPTIONAL_HEADER IMAGE_SECTION_HEADER IMAGE_IMPORT_DESCRIPTOR IMAGE_EXPORT_DIRECTORY IMAGE_IMPORT_BY_NAME IMAGE_THUNK_DATA32 主要な構造体は上記の通り。
+IMAGE_DOS_HEADER typedef struct _IMAGE_DOS_HEADER { // DOS .EXE header WORD e_magic; // Magic number WORD e_cblp; // Bytes on last page of file WORD e_cp; // Pages in file WORD e_crlc; // Relocations WORD e_cparhdr; // Size of header in paragraphs WORD e_minalloc; // Minimum extra paragraphs needed WORD e_maxalloc; // Maximum extra paragraphs needed WORD e_ss; // Initial (relative) SS value WORD e_sp; // Initial SP value WORD e_csum; // Checksum WORD e_ip; // Initial IP value WORD e_cs; // Initial (relative) CS value WORD e_lfarlc; // File address of relocation table WORD e_ovno; // Overlay number WORD e_res[4]; // Reserved words WORD e_oemid; // OEM identifier (for e_oeminfo) WORD e_oeminfo; // OEM information; e_oemid specific WORD e_res2[10]; // Reserved words LONG e_lfanew; // File address of new exe header } IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER; e_magic , e_lfanew について注目するとよい。</description>
+    </item>
+    
     <item>
       <title>LibFuzzerを使った</title>
       <link>https://famasoon.github.io/posts/libfuzzerfail/</link>
