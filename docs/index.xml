@@ -10,7 +10,31 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Fri, 21 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Offensive Rustのレビュー</title>
+      <link>https://famasoon.github.io/posts/offensiverustreview/</link>
+      <pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/offensiverustreview/</guid>
+      <description>Offensive Rust かんたんなまとめ: Rustでレッドチームシミュレータを書きたい人におすすめ。
+リンク https://redteamsorcery.teachable.com/courses/enrolled/1973492
+https://www.udemy.com/course/offensive-rust/
+アフィリエイトはないです。
+概要 本教材ではオフェンシブなコード、レッドチーム向けのコードをRustで書いていく。
+なお、対象環境はWindows。
+WSLとかではなくWindowsに直接Rustをインストールする。
+内容 内容はかなり多岐にわたる。
+最初の方ではRustのセットアップを実施し、基礎的なRustの書き方を教えてくれる。
+中盤からはオフェンシブなコードを書いていく。
+例えばLDAPを用いたActive Directoryの列挙であったり、シェルコードを書いたり、DLLインジェクションを行ったりと、基本的なRustの書き方を抑えつつレッドチーム向けのコードを書いていく。
+また、Reflective PE Loaderを書いたり、Process Hollowingをやったり、ハッシュ化した関数呼び出しをしたりとレッドチームシミュレータで実行しそうな内容をRustでどのように書くか教えてくれる。
+以降もAMSIのバイパスの仕方やProcess Doppelgangingの仕方をRustで解説してくれる。
+総じてレッドチームシミュレータをRustで書いてみたいと方にはおすすめの内容。
+各パートは体感ではそこまで長くなく、サッと書いてサッと試すということをやっていく。
+まとめ レッドチーム向けのシミュレータを書きたいとなったとき、候補としてはC/C++が挙がるがRustで書きたい人は、この教材を買って見てみると良いだろう。</description>
+    </item>
+    
     <item>
       <title>PEについてメモ</title>
       <link>https://famasoon.github.io/posts/whatispe/</link>
