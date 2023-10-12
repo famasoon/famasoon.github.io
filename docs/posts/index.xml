@@ -705,25 +705,5 @@ $ sudo apt install tor $ sudo systemctl start tor Tor 公式ドキュメント�
 VM側のWindowsで実施する手順 Windows上で管理者権限でPowershellを起動 下記コマンドを入力 bcdedit /debug on bcdedit /dbgsettings serial debugport:1 baudrate:115200 Windowsをシャットダウン ホスト側のWinodwsで実施する手順 VirtualBoxでVMの設定を開き下記の画像のように設定 &amp;ldquo;シリアルポートを有効化&amp;quot;にチェックを入れる &amp;ldquo;ポートモード&amp;quot;を&amp;quot;ホストにパイプ&amp;quot;にする &amp;ldquo;パス/アドレス&amp;quot;を&amp;rdquo;\.\pipe\com1&amp;quot;にする VMを起動する ストア からWinDbg Previewをインストールする(なぜか自分の環境ではWDKのWinDbgだとカーネルでバッグをしようにも&amp;quot;debuggee not connected&amp;quot;と表示され使えなかったためWinDbg Previewを使う) WinDbg Preview を開いたら&amp;quot;ファイル&amp;quot;タブから&amp;quot;Attach to kernel&amp;quot;を選択し下記設定をする &amp;ldquo;Pipe&amp;quot;にチェックを入れる &amp;ldquo;Reconnect&amp;quot;にチェックを入れる &amp;ldquo;Port&amp;quot;を&amp;rdquo;\.\pipe\com1&amp;quot;にする VMを起動 これでカーネルでバッグが実施可能になる。</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://famasoon.github.io/posts/antidebug/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://famasoon.github.io/posts/antidebug/</guid>
-      <description>Anti-debug アンチデバッグのやり方はたくさんあるが、その中でもよく使われるものを紹介する。
-網羅的に把握したい場合は下記リンクを参照すると良い。
-https://unprotect.it/category/anti-debugging/
-古典的なアンチデバッグ bool FindDebugger() { bool bDetect = false; HWND hDebugger = ::FindWindow(NULL, &amp;#34;OllyDBG&amp;#34;); if (hDebugger) { bDetect = true; AfxMessageBox(&amp;#34;Can not use debugger&amp;#34;); } return bDetect; } デバッガーのウィンドウキャプションを見つけてプログラムを終了させる。
-IsDebuggerPresent MSDNに記載されていてkernel32.dllから提供されている。
-if (IsDebuggerPresent()) { exit(1); } アセンブリになると下記のようになる
-mov eax, dword ptf fs:[18] mov eax, dword ptr ds:[eax+30] movzx eax, byte ptr ds:[eax+2] retn fs:[18] はTEBを指す。(Thread Environment Block)
-TEBをEAXに入れたがそこから30番地離れたアドレスを再びEAXに入力するコードだ。
-TEBから0x30離れたところにはPEB(Process Environment Block) がある。
-EAXにはPEBが入っていて、そこから+2移動したアドレスから1バイト持ってきていると解釈できる。
-PEBの構造体は下記の通り。
-typedef struct _PEB { BYTE Reserved1[2]; BYTE BeingDebugged; BYTE Reserved2[1]; PVOID Reserved3[2]; PPEB_LDR_DATA Ldr; PRTL_USER_PROCESS_PARAMETERS ProcessParameters; PVOID Reserved4[3]; PVOID AtlThunkSListPtr; PVOID Reserved5; ULONG Reserved6; PVOID Reserved7; ULONG Reserved8; ULONG AtlThunkSListPtr32; PVOID Reserved9[45]; BYTE Reserved10[96]; PPS_POST_PROCESS_INIT_ROUTINE PostProcessInitRoutine; BYTE Reserved11[128]; PVOID Reserved12[1]; ULONG SessionId; } PEB, *PPEB; BeingDebugged という名前の箇所の値を入れている。</description>
-    </item>
-    
   </channel>
 </rss>

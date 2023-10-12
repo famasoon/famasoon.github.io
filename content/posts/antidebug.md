@@ -1,3 +1,9 @@
+---
+title: "Anti-debug introduction"
+date: "2023-10-13"
+draft: "false"
+---
+
 # Anti-debug
 
 アンチデバッグのやり方はたくさんあるが、その中でもよく使われるものを紹介する。
