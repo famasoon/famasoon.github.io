@@ -74,3 +74,5 @@ fn main() {
     }
 }
 ```
+
+inspired: https://github.com/trickster0/OffensiveRust
