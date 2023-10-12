@@ -10,7 +10,27 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 11 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anti-debug introduction</title>
+      <link>https://famasoon.github.io/posts/antidebug/</link>
+      <pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/antidebug/</guid>
+      <description>Anti-debug アンチデバッグのやり方はたくさんあるが、その中でもよく使われるものを紹介する。
+網羅的に把握したい場合は下記リンクを参照すると良い。
+https://unprotect.it/category/anti-debugging/
+古典的なアンチデバッグ bool FindDebugger() { bool bDetect = false; HWND hDebugger = ::FindWindow(NULL, &amp;#34;OllyDBG&amp;#34;); if (hDebugger) { bDetect = true; AfxMessageBox(&amp;#34;Can not use debugger&amp;#34;); } return bDetect; } デバッガーのウィンドウキャプションを見つけてプログラムを終了させる。
+IsDebuggerPresent MSDNに記載されていてkernel32.dllから提供されている。
+if (IsDebuggerPresent()) { exit(1); } アセンブリになると下記のようになる
+mov eax, dword ptf fs:[18] mov eax, dword ptr ds:[eax+30] movzx eax, byte ptr ds:[eax+2] retn fs:[18] はTEBを指す。(Thread Environment Block)
+TEBをEAXに入れたがそこから30番地離れたアドレスを再びEAXに入力するコードだ。
+TEBから0x30離れたところにはPEB(Process Environment Block) がある。
+EAXにはPEBが入っていて、そこから+2移動したアドレスから1バイト持ってきていると解釈できる。
+PEBの構造体は下記の通り。
+typedef struct _PEB { BYTE Reserved1[2]; BYTE BeingDebugged; BYTE Reserved2[1]; PVOID Reserved3[2]; PPEB_LDR_DATA Ldr; PRTL_USER_PROCESS_PARAMETERS ProcessParameters; PVOID Reserved4[3]; PVOID AtlThunkSListPtr; PVOID Reserved5; ULONG Reserved6; PVOID Reserved7; ULONG Reserved8; ULONG AtlThunkSListPtr32; PVOID Reserved9[45]; BYTE Reserved10[96]; PPS_POST_PROCESS_INIT_ROUTINE PostProcessInitRoutine; BYTE Reserved11[128]; PVOID Reserved12[1]; ULONG SessionId; } PEB, *PPEB; BeingDebugged という名前の箇所の値を入れている。</description>
+    </item>
+    
     <item>
       <title>AMSI bypass</title>
       <link>https://famasoon.github.io/posts/amsibypass/</link>

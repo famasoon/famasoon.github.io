@@ -1,6 +1,6 @@
 ---
 title: "Anti-debug introduction"
-date: "2023-10-13"
+date: "2023-10-12"
 draft: "false"
 ---
 
