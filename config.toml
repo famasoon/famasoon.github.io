@@ -8,7 +8,7 @@ enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
 buildExpired = false
-googleAnalytics = "UA-107195112-2"
+googleAnalytics = "G-ZJPXHR8YPR"
 pygmentsUseClasses = true
 
 [minify]
@@ -19,9 +19,9 @@ minifyOutput = true
 env = "production"
 title = "x64.moe"
 description = "FAMASoon's blog"
-keywords = [ "Blog", "Portfolio" ]
+keywords = ["Blog", "Portfolio"]
 author = "FAMASoon"
-images = [ "static/famasoon.jpg" ]
+images = ["static/famasoon.jpg"]
 DateFormat = "January 2, 2006"
 defaultTheme = "auto"
 disableThemeToggle = false
@@ -41,56 +41,56 @@ hideSummary = false
 showtoc = false
 tocopen = false
 
-  [params.label]
-  text = "Home"
+[params.label]
+text = "Home"
 
-  [params.profileMode]
-  enabled = false
-  title = "x64.moe"
-  subtitle = "x64.moe is FAMASoon's blog"
-  imageUrl = "static/famasoon.jpg"
-  imageWidth = 120
-  imageHeight = 120
-  imageTitle = "my image"
+[params.profileMode]
+enabled = false
+title = "x64.moe"
+subtitle = "x64.moe is FAMASoon's blog"
+imageUrl = "static/famasoon.jpg"
+imageWidth = 120
+imageHeight = 120
+imageTitle = "my image"
 
-    [[params.profileMode.buttons]]
-    name = "Posts"
-    url = "posts"
+[[params.profileMode.buttons]]
+name = "Posts"
+url = "posts"
 
-    [[params.profileMode.buttons]]
-    name = "Tags"
-    url = "tags"
+[[params.profileMode.buttons]]
+name = "Tags"
+url = "tags"
 
-  [params.homeInfoParams]
-  Title = "x64.moe 👋"
-  Content = "Welcome to FAMASoon's blog"
+[params.homeInfoParams]
+Title = "x64.moe 👋"
+Content = "Welcome to FAMASoon's blog"
 
-  [[params.socialIcons]]
-  name = "twitter"
-  url = "https://twitter.com/FAMASoon"
+[[params.socialIcons]]
+name = "twitter"
+url = "https://twitter.com/FAMASoon"
 
-  [[params.socialIcons]]
-  name = "github"
-  url = "https://github.com/famasoon"
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/famasoon"
 
-  [params.cover]
-  hidden = true
-  hiddenInList = true
-  hiddenInSingle = true
+[params.cover]
+hidden = true
+hiddenInList = true
+hiddenInSingle = true
 
-  [params.editPost]
-  URL = "https://github.com/<path_to_repo>/content"
-  Text = "Suggest Changes"
-  appendFilePath = true
+[params.editPost]
+URL = "https://github.com/<path_to_repo>/content"
+Text = "Suggest Changes"
+appendFilePath = true
 
-  [params.fuseOpts]
-  isCaseSensitive = false
-  shouldSort = true
-  location = 0
-  distance = 1_000
-  threshold = 0.4
-  minMatchCharLength = 0
-  keys = [ "title", "permalink", "summary", "content" ]
+[params.fuseOpts]
+isCaseSensitive = false
+shouldSort = true
+location = 0
+distance = 1_000
+threshold = 0.4
+minMatchCharLength = 0
+keys = ["title", "permalink", "summary", "content"]
 
 [[menu.main]]
 identifier = "categories"
