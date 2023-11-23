@@ -10,7 +10,17 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 12 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anti-debug introduction</title>
+      <link>https://famasoon.github.io/posts/proxyingdll/</link>
+      <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://famasoon.github.io/posts/proxyingdll/</guid>
+      <description>DLL proxying with Rust what is dll proxying? DLL proxying, also known as DLL redirection or DLL hijacking, is a technique used by attackers or developers to manipulate the way Windows loads dynamic link libraries (DLLs). DLLs are files that contain code and data that multiple programs can use simultaneously. They provide a way to modularize code and promote code reuse.
+DLL proxying involves placing a malicious or modified DLL in a location that is searched by a target application before the legitimate DLL is located.</description>
+    </item>
+    
     <item>
       <title>Anti-debug introduction</title>
       <link>https://famasoon.github.io/posts/antidebug/</link>
