@@ -12,7 +12,7 @@
     <language>ja-JP</language>
     <lastBuildDate>Thu, 23 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://famasoon.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Anti-debug introduction</title>
+      <title>DLL proxying with Rust</title>
       <link>https://famasoon.github.io/posts/proxyingdll/</link>
       <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
       
