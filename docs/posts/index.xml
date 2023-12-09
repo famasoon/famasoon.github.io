@@ -17,7 +17,7 @@
       <pubDate>Sat, 09 Dec 2023 00:00:00 +0000</pubDate>
       
       <guid>https://famasoon.github.io/posts/atackoftitan/</guid>
-      <description>This is Day 9 of the Monikle Advent Calendar! https://adventar.org/calendars/8977
+      <description>This is Day 9 of the monicle Advent Calendar! https://adventar.org/calendars/8977
 tl;dr Active Directory exploitation involves unauthorized actions by attackers to compromise, manipulate, or gain unauthorized access to an organization&amp;rsquo;s Active Directory infrastructure. This can include stealing credentials, using password hashes, forging tickets, escalating privileges, moving laterally within the network, and establishing persistent access. Organizations should implement security measures to detect and mitigate these threats.
 What is Active Directory Active Directory (AD) is a directory service developed by Microsoft for Windows domain networks.</description>
     </item>

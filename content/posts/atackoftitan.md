@@ -4,7 +4,7 @@ date: "2023-12-09"
 draft: "false"
 ---
 
-This is Day 9 of the Monikle Advent Calendar!
+This is Day 9 of the monicle Advent Calendar!
 https://adventar.org/calendars/8977
 
 ## tl;dr
