@@ -5,10 +5,12 @@
     <link>https://famasoon.github.io/categories/</link>
     <description>Recent content in Categories on x64.moe</description>
     <image>
+      <title>x64.moe</title>
       <url>https://famasoon.github.io/static/famasoon.jpg</url>
       <link>https://famasoon.github.io/static/famasoon.jpg</link>
     </image>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>ja-JP</language><atom:link href="https://famasoon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo -- 0.135.0</generator>
+    <language>ja-JP</language>
+    <atom:link href="https://famasoon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
