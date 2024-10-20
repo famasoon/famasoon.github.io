@@ -1,6 +1,6 @@
 ---
 title: "GOAD Writeup Ch2"
-date: "2024-10-21"
+date: "2024-10-20"
 draft: "false"
 ---
 
